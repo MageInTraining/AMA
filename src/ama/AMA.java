@@ -3,8 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/////BLABLABLA
 package ama;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import org.apache.commons.math3.distribution.LogNormalDistribution;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
+
 /**
  *
  * @author cen62777
@@ -35,6 +36,23 @@ public class AMA extends Application{
 
     @Override
     public void start(Stage stage){
+        
+        String file_name;
+        file_name = "C:\\Users\\cen62777\\Documents\\test.txt";
+        
+        try {
+            ReadFile file = new ReadFile(file_name);
+            String[] aryLines = file.OpenFile();
+            
+            int i;
+            for (i=0; i < aryLines.length; i++) {
+                System.out.println(aryLines[i]);
+            }
+        }
+        
+        catch (IOException e) {
+            System.out.println( e.getMessage() );
+        }
         
         PercentileSeeker pSeeker = new PercentileSeeker();
         List<Scenario> scenarios = new ArrayList<>();
