@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package ama;
+import com.opencsv.bean.CsvToBeanBuilder;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,26 +34,16 @@ public class AMA extends Application{
     private static double mu;
     private static double sigma;
     */
-    
+    //TODO: fill maxExpectedRange from load
     private static int maxExpectedRange = 5000;
 
     @Override
-    public void start(Stage stage){
+    public void start(Stage stage) throws FileNotFoundException{
         
-        String file_name;
-        file_name = "C:\\Users\\cen62777\\Documents\\test.txt";
-
-        PercentileSeeker pSeeker = new PercentileSeeker();
-        List<Scenario> scenarios = new ArrayList<>();
-        
-        //TODO: replace with method to fill List from provided css file
-        //TODO: fill maxExpectedRange from load
-        scenarios.add(new Scenario(1, 50, 1, 1000));
-        scenarios.add(new Scenario(2, 300, 0.2, 1300));
-        scenarios.add(new Scenario(3, 100, 0.5, 200));
-        scenarios.add(new Scenario(4, 200, 0.01, 5000));
-        scenarios.add(new Scenario(5, 200, 2, 300));
-        scenarios.add(new Scenario(6, 200, 0.333, 2000));
+        //TODO: give path to csv file as parametr
+        String file_name= "C:\\Users\\cen62777\\Downloads\\Rizika.csv";
+        PercentileSeeker pSeeker = new PercentileSeeker();        
+        List<Scenario> scenarios = new CsvToBeanBuilder(new FileReader(file_name)).withType(Scenario.class).withSeparator('\t').build().parse();
         
         //array of lognormal distributions for individual scenario 
         double[] distribution = new double[(maxExpectedRange/10)+1];
