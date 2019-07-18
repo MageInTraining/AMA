@@ -39,21 +39,7 @@ public class AMA extends Application{
         
         String file_name;
         file_name = "C:\\Users\\cen62777\\Documents\\test.txt";
-        
-        try {
-            ReadFile file = new ReadFile(file_name);
-            String[] aryLines = file.OpenFile();
-            
-            int i;
-            for (i=0; i < aryLines.length; i++) {
-                System.out.println(aryLines[i]);
-            }
-        }
-        
-        catch (IOException e) {
-            System.out.println( e.getMessage() );
-        }
-        
+
         PercentileSeeker pSeeker = new PercentileSeeker();
         List<Scenario> scenarios = new ArrayList<>();
         
