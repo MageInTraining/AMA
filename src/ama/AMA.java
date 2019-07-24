@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package ama;
+import static ama.Constants.EXP_PERCENTILE;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -86,17 +87,30 @@ public class AMA extends Application{
         }
         
         Mean mean = new Mean();
+        
         StandardDeviation sd1 = new StandardDeviation();
         
-        LogNormalDistribution ln2 = new LogNormalDistribution(5.1781, 0.2755);
+//        LogNormalDistribution ln2 = new LogNormalDistribution(5.1781, 0.2755);
+        LogNormalDistribution ln2 = new LogNormalDistribution(
+                log(mean.evaluate(distribution))
+                , pSeeker.getSigmaPerPercentile(
+                        0.99, maxExpectedRange, log(mean.evaluate(distribution)
+                        )
+                )
+        );
                                         
         double[] distribution2 = new double[(maxExpectedRange/10)+1];
         for(int i=0; i < 5000; i++){
            Double d = ln2.sample();
-           try{
+           //replaces values from 0.991+ with value from 0.990
+            if(d.intValue()>(maxExpectedRange/10)){
+                d=(double)(maxExpectedRange/10);
+            }
+            System.out.println("Master distribution "+ d);
+            try{
                 distribution2[d.intValue()/10]++;
             }catch(Exception e){
-                System.out.println(e);
+                System.out.println("Master distribution " + e);
             }
         }
         
@@ -113,7 +127,7 @@ public class AMA extends Application{
         
         for(int i=0;i < (maxExpectedRange/10)+1;i++){
             series.getData().add(new XYChart.Data(i, distribution[i]));
-            series2.getData().add(new XYChart.Data(i, distribution2[i]));
+            //series2.getData().add(new XYChart.Data(i, distribution2[i]));
         }
         Scene scene  = new Scene(lineChart,700,350);
         lineChart.setCreateSymbols(false);
