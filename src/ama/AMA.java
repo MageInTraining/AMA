@@ -8,6 +8,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import static java.lang.Math.log;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,16 @@ public class AMA extends Application{
         //TODO: replace with method to simulate scenarios
         for (Scenario scenario : scenarios) {
             
+            System.out.println("Scenario " + scenario.getScenarioNumber());
+            System.out.println(scenario.getEstimated());
+            System.out.println(scenario.getProbability());
+            System.out.println(scenario.getMax());
+            
+            scenario.setMu(log(scenario.getEstimated()));
             scenario.setSigma(pSeeker);
+            
+            System.out.println(scenario.getMu());
+            System.out.println(scenario.getSigma());
             
             //creates lognormal distribution for the scenario
             LogNormalDistribution ln1 = new LogNormalDistribution(scenario.getMu(),
@@ -60,6 +70,7 @@ public class AMA extends Application{
             //simulates scenario in the span of 1000 years
             for(int i = 0; i < (scenario.getProbability() * 1000); i++ ){
                 Double d = ln1.sample();
+                //System.out.println(d);
                 
                 //replaces values from 0.991+ with value from 0.990
                 if(d.intValue()>scenario.getMax()){
