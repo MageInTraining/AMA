@@ -6,19 +6,28 @@
 package ama;
 
 import static ama.Constants.EXP_PERCENTILE;
+import com.opencsv.bean.CsvBindByPosition;
 import static java.lang.Math.log;
 
 /**
  *
  * @author cen62777
  */
-public class Scenario {
+public class Scenario implements java.io.Serializable{
+    @CsvBindByPosition(position = 0)
     public int scenarioNumber;
+    @CsvBindByPosition(position = 1)
     public int estimated;
+    @CsvBindByPosition(position = 2)
     public double probability;
+    @CsvBindByPosition(position = 3)
     public int max;
     public double mu;
     public double sigma;
+    
+    public Scenario(){
+        mu = log(estimated);
+    }
     
     public Scenario(int n, int e, double p, int m){
         
