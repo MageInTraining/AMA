@@ -15,30 +15,56 @@ import static java.lang.Math.log;
  */
 public class Scenario implements java.io.Serializable{
     @CsvBindByPosition(position = 0)
-    public int scenarioNumber;
+    private int scenarioNumber;
     @CsvBindByPosition(position = 1)
-    public int estimated;
+    private int estimated;
     @CsvBindByPosition(position = 2)
-    public double probability;
+    private double probability;
     @CsvBindByPosition(position = 3)
-    public int max;
-    public double mu;
-    public double sigma;
+    private int max;
+    private double mu;
+    private double sigma;
     
     public Scenario(){
-        mu = log(estimated);
+        this.mu = log(estimated);
     }
     
-    public Scenario(int n, int e, double p, int m){
-        
-        scenarioNumber = n;
-        estimated = e;
-        probability = p;
-        max = m;
-        mu = log(estimated);
+    /**Getters**/
+    public int getScenarioNumber(){
+        return this.scenarioNumber;
     }
-    
-    protected void setSigma(PercentileSeeker ps){
+    public int getEstimated(){
+        return this.estimated;
+    }
+    public double getProbability(){
+        return this.probability;
+    }
+    public int getMax(){
+        return this.max;
+    }
+    public double getMu(){
+        return this.mu;
+    }
+    public double getSigma(){
+        return this.sigma;
+    }
+    /**Setter*/
+    public void setScenarioNumber(int n){
+       this.scenarioNumber = n; 
+    }
+    public void setEstimated(int e){
+        this.estimated = e;
+    }
+    public void setProbability(double p){
+        this.probability = p;
+    }
+    public void setMax(int m){
+        this.max = m;
+    }
+    public void setMu(double m){
+        this.mu = m;
+    }
+    public void setSigma(PercentileSeeker ps){
         sigma = ps.getSigmaPerPercentile(EXP_PERCENTILE, max, log(estimated));
     }
 }
