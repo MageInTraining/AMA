@@ -41,7 +41,7 @@ public class AMA extends Application{
     public void start(Stage stage) throws FileNotFoundException{
         
         //TODO: give path to csv file as parametr
-        String file_name= "C:\\Users\\cen62777\\Documents\\Rizika.csv";
+        String file_name= "C:\\Users\\cen62777\\Documents\\Rizika_test.csv";
         PercentileSeeker pSeeker = new PercentileSeeker();        
         List<Scenario> scenarios = new CsvToBeanBuilder(new FileReader(file_name)).withType(Scenario.class).withSeparator('\t').build().parse();
         
@@ -85,8 +85,10 @@ public class AMA extends Application{
            try{
                 distribution2[d.intValue()/10]++;
             }catch(Exception e){
+                System.out.println(e);
             }
         }
+        
         //Create graph of functions
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
