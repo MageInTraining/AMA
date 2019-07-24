@@ -54,21 +54,21 @@ public class AMA extends Application{
             scenario.setSigma(pSeeker);
             
             //creates lognormal distribution for the scenario
-            LogNormalDistribution ln1 = new LogNormalDistribution(scenario.mu,
-                    scenario.sigma);
+            LogNormalDistribution ln1 = new LogNormalDistribution(scenario.getMu(),
+                    scenario.getSigma());
             
             //simulates scenario in the span of 1000 years
-            for(int i = 0; i < (scenario.probability * 1000); i++ ){
+            for(int i = 0; i < (scenario.getProbability() * 1000); i++ ){
                 Double d = ln1.sample();
                 
                 //replaces values from 0.991+ with value from 0.990
-                if(d.intValue()>scenario.max){
-                    d=(double)scenario.max;
+                if(d.intValue()>scenario.getMax()){
+                    d=(double)scenario.getMax();
                 }
                 try{
                     distribution[d.intValue()/10]++;
                 }catch(Exception e){
-                    System.out.println("Scenario " + scenario.scenarioNumber +
+                    System.out.println("Scenario " + scenario.getScenarioNumber() +
                             ": " + e);
                 }
             }
