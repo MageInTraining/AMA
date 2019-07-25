@@ -25,10 +25,6 @@ import org.apache.commons.math3.stat.descriptive.moment.Mean;
  * @author cen62777
  */
 public class AMA extends Application{
-    
-    //TODO: fill maxExpectedRange from load
-    private static int maxExpectedRange = 5000;
-    private static int numberOfSlots = (maxExpectedRange/10) + 1;
 
     @Override
     public void start(Stage stage) throws FileNotFoundException{
@@ -41,10 +37,17 @@ public class AMA extends Application{
                     new CsvToBeanBuilder(new FileReader(file_name)).
                         withType(Scenario.class).withSeparator('\t').
                             build().parse();
-        
+        int maxExpectedRange = 0;
+        for(Scenario scenario : scenarios){
+            if(scenario.getMax()>maxExpectedRange){
+                maxExpectedRange = scenario.getMax();
+            }
+        }
+        int numberOfSlots = maxExpectedRange/10 +1;
         //array of lognormal distributions for individual scenario 
-        double[] distribution = new double[numberOfSlots+1];
+        double[] distribution = new double[numberOfSlots];
         //TODO: replace with method to simulate scenarios
+        long numberOfSimulations = 0;
         for (Scenario scenario : scenarios) {
             
             //creates lognormal distribution for the scenario
@@ -58,10 +61,6 @@ public class AMA extends Application{
             for(int i = 0; i < (scenario.getProbability() * 1000); i++ ){
                 Double d = ln1.sample();
 
-                //replaces values from 0.991+ with value from 0.990
-                if(d.intValue()>numberOfSlots){
-                    d=(double)numberOfSlots;
-                }
                 //adds count to distribution slot
                 try{
                     distribution[d.intValue()/10]++;
@@ -69,35 +68,40 @@ public class AMA extends Application{
                     System.out.println("Scenario "
                             + scenario.getScenarioNumber() + ": " + e);
                 }
+                numberOfSimulations++;
             }
         }
         //creates "Master scenario", representing all scenarios
 //        Mean mean = new Mean();
-//        Scenario master = new Scenario();
+        Scenario master = new Scenario();
 //        master.setEstimated((int)mean.evaluate(distribution));
-//        master.setMax(maxExpectedRange);
+        long l = 0;
+        int s = 0;
+        for(int i=0; i < numberOfSlots;i++){
+            l = l + (int)distribution[i] * i;
+            s = s + (int)distribution[i];
+        }
+        master.setEstimated(((int)l/s)*10);
+        master.setMax(maxExpectedRange);
 //        master.setProbability(1.0);
-//        master.setMu(log(master.getMax()));
-//        master.setSigma(pSeeker);
-//        
-//        double[] distribution2 = new double[maxExpectedRange];
-//        
-//        LogNormalDistribution ln2 =
-//                    new LogNormalDistribution(
-//                            master.getMu(),master.getSigma());
-//                                        
-//        for(int i=0; i < (master.getProbability()*1000); i++){
-//            Double d = ln2.sample();
-//            //replaces values from 0.991+ with value from 0.990
-//            if(d.intValue()>master.getMax()){
-//                d=(double)master.getMax();
-//             }
-//            try{
-//                distribution2[d.intValue()]++;
-//            }catch(Exception e){
-//                System.out.println("Master distribution " + e);
-//            }
-//        }
+        master.setMu(log(master.getEstimated()));
+        master.setSigma(pSeeker);
+        
+        double[] distribution2 = new double[numberOfSlots];
+        
+        LogNormalDistribution ln2 =
+                    new LogNormalDistribution(
+                            master.getMu(),master.getSigma());
+                                        
+        for(int i=0; i < numberOfSimulations; i++){
+            Double d = ln2.sample();
+            //replaces values from 0.991+ with value from 0.990
+            try{
+                distribution2[d.intValue()/10]++;
+            }catch(Exception e){
+                System.out.println("Master distribution " + e);
+            }
+        }
         
         //TODO: move to separate class/method
         //Create graph of functions
@@ -113,7 +117,7 @@ public class AMA extends Application{
         
         for(int i=0;i < numberOfSlots;i++){
             series.getData().add(new XYChart.Data(i, distribution[i]));
-//            series2.getData().add(new XYChart.Data(i, distribution2[i]));
+            series2.getData().add(new XYChart.Data(i, distribution2[i]));
         }
         Scene scene  = new Scene(lineChart,700,350);
         lineChart.setCreateSymbols(false);
