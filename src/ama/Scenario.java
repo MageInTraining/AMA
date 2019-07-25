@@ -6,30 +6,65 @@
 package ama;
 
 import static ama.Constants.EXP_PERCENTILE;
+import com.opencsv.bean.CsvBindByPosition;
 import static java.lang.Math.log;
 
 /**
  *
  * @author cen62777
  */
-public class Scenario {
-    public int scenarioNumber;
-    public int estimated;
-    public double probability;
-    public int max;
-    public double mu;
-    public double sigma;
+public class Scenario implements java.io.Serializable{
+    @CsvBindByPosition(position = 0)
+    private int scenarioNumber;
+    @CsvBindByPosition(position = 1)
+    private int estimated;
+    @CsvBindByPosition(position = 2)
+    private double probability;
+    @CsvBindByPosition(position = 3)
+    private int max;
+    private double mu;
+    private double sigma;
     
-    public Scenario(int n, int e, double p, int m){
-        
-        scenarioNumber = n;
-        estimated = e;
-        probability = p;
-        max = m;
-        mu = log(estimated);
+    public Scenario(){
     }
     
-    protected void setSigma(PercentileSeeker ps){
-        sigma = ps.getSigmaPerPercentile(EXP_PERCENTILE, max, log(estimated));
+    /**Getters**/
+    public int getScenarioNumber(){
+        return scenarioNumber;
+    }
+    public int getEstimated(){
+        return estimated;
+    }
+    public double getProbability(){
+        return probability;
+    }
+    public int getMax(){
+        return max;
+    }
+    public double getMu(){
+        return mu;
+    }
+    public double getSigma(){
+        return sigma;
+    }
+    /**Setter*/
+    public void setScenarioNumber(int n){
+       scenarioNumber = n; 
+    }
+    public void setEstimated(int e){
+        estimated = e;
+    }
+    public void setProbability(double p){
+        probability = p;
+    }
+    public void setMax(int m){
+        max = m;
+    }
+    public void setMu(double m){
+        mu = m;
+    }
+    public void setSigma(PercentileSeeker ps){
+        sigma =ps.getSigmaPerPercentile(EXP_PERCENTILE,
+                                                max, log(estimated));
     }
 }
