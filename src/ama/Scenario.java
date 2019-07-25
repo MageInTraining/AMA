@@ -26,45 +26,45 @@ public class Scenario implements java.io.Serializable{
     private double sigma;
     
     public Scenario(){
-        this.mu = log(estimated);
     }
     
     /**Getters**/
     public int getScenarioNumber(){
-        return this.scenarioNumber;
+        return scenarioNumber;
     }
     public int getEstimated(){
-        return this.estimated;
+        return estimated;
     }
     public double getProbability(){
-        return this.probability;
+        return probability;
     }
     public int getMax(){
-        return this.max;
+        return max;
     }
     public double getMu(){
-        return this.mu;
+        return mu;
     }
     public double getSigma(){
-        return this.sigma;
+        return sigma;
     }
     /**Setter*/
     public void setScenarioNumber(int n){
-       this.scenarioNumber = n; 
+       scenarioNumber = n; 
     }
     public void setEstimated(int e){
-        this.estimated = e;
+        estimated = e;
     }
     public void setProbability(double p){
-        this.probability = p;
+        probability = p;
     }
     public void setMax(int m){
-        this.max = m;
+        max = m;
     }
     public void setMu(double m){
-        this.mu = m;
+        mu = m;
     }
     public void setSigma(PercentileSeeker ps){
-        sigma = ps.getSigmaPerPercentile(EXP_PERCENTILE, max, log(estimated));
+        sigma =ps.getSigmaPerPercentile(EXP_PERCENTILE,
+                                                max, log(estimated));
     }
 }
