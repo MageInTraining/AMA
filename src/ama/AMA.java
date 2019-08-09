@@ -59,7 +59,7 @@ public class AMA extends Application{
                             scenario.getMu(),scenario.getSigma());
             
             //simulates scenario in the span of 1000 years
-            for(int i = 0; i < (scenario.getProbability() * 1000); i++ ){
+            for(int i = 0; i < (scenario.getProbability() * 100000); i++ ){
                 Double d = ln1.sample();
 
                 //adds count to distribution slot
@@ -79,11 +79,11 @@ public class AMA extends Application{
         long l = 0;
         int s = 0;
         for(int i=0; i < numberOfSlots;i++){
-            l = l + (int)distribution[i] * i;
+            l = l + (int)distribution[i] * i *10;
             s = s + (int)distribution[i];
         }
-        master.setEstimated(((int)l/s)*10);
-        master.setMax(maxExpectedRange);
+        master.setEstimated(((int)l/s));
+        master.setMax(maxExpectedRange/10);
 //        master.setProbability(1.0);
         master.setMu(log(master.getEstimated()));
         master.setSigma(pSeeker);
@@ -100,7 +100,7 @@ public class AMA extends Application{
             try{
                 distribution2[d.intValue()/10]++;
             }catch(Exception e){
-                System.out.println("Master distribution " + e);
+                System.out.println("Master distribution " + e + " ,try number: " + i);
             }
         }
         
@@ -108,8 +108,8 @@ public class AMA extends Application{
         //Create graph of functions
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Damage");
-        xAxis.setLabel("Density");
+        xAxis.setLabel("Damage");
+        yAxis.setLabel("Density");
         
         final LineChart<Number,Number> lineChart = new LineChart<>(xAxis,yAxis);
         
