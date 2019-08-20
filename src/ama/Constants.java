@@ -16,4 +16,6 @@ public interface Constants {
     public static final double U = 2.33; 
     //percentile, for which we are looking
     public static final double EXP_PERCENTILE = 0.99;
+    public static final double MAGNIFICATION = 100;
+    public static final int NUMBER_OF_YEARS = 1000;
 }

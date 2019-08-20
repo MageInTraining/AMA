@@ -3,22 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+//AAAAAAAAAAAAAAAAAAAAAAAAAAA
 package ama;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import static java.lang.Math.log;
 import java.util.List;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
-import org.apache.commons.math3.distribution.LogNormalDistribution;
-import org.apache.commons.math3.stat.descriptive.moment.Mean;
 
 /**
  *
@@ -30,100 +24,54 @@ public class AMA extends Application{
     public void start(Stage stage) throws FileNotFoundException{
         
         //TODO: give path to csv file as parametr
-        String file_name= "C:\\Users\\cen62777\\Documents\\Rizika_test.csv";
+        String file_name= "C:\\Users\\cen62777\\Documents\\Rizika.csv";
         PercentileSeeker pSeeker = new PercentileSeeker();   
         //creates list of scenarios, provided in csv file
         List<Scenario> scenarios =
-                    new CsvToBeanBuilder(new FileReader(file_name)).
-                        withType(Scenario.class).withSeparator('\t').
-                            build().parse();
-        int maxExpectedRange = 0;
-        for(Scenario scenario : scenarios){
-            if(scenario.getMax()>maxExpectedRange){
-                maxExpectedRange = scenario.getMax();
+                    new CsvToBeanBuilder(new FileReader(file_name))
+                        .withType(Scenario.class).withSeparator('\t')
+                            .build().parse();
+        //individual list of scenarios for each of (Erste?) groups
+        Category fraud = new Category();
+        Category improperPractices= new Category();
+        Category infrastructure = new Category();
+        Category execution = new Category();
+        Category notSet = new Category();
+        
+        for (Scenario scenario : scenarios){
+            int s = scenario.getRiskType();
+            switch(s) {
+                case 1:
+                    fraud.addToList(scenario);
+                    break;
+                case 2:
+                    improperPractices.addToList(scenario);
+                    break;
+                case 3:
+                    execution.addToList(scenario);
+                    break;
+                case 4:;
+                    improperPractices.addToList(scenario);
+                    break;
+                case 5:
+                    infrastructure.addToList(scenario);
+                    break;
+                case 6:
+                    fraud.addToList(scenario);
+                    break;
+                case 7:
+                    infrastructure.addToList(scenario);
+                    break;
+                case 0:
+                    notSet.addToList(scenario);
+                    break;
             }
         }
-        int numberOfSlots = maxExpectedRange/10 +1;
-        //array of lognormal distributions for individual scenario 
-        double[] distribution = new double[numberOfSlots];
-        //TODO: replace with method to simulate scenarios
-        long numberOfSimulations = 0;
-        for (Scenario scenario : scenarios) {
-            
-            //creates lognormal distribution for the scenario
-            scenario.setMu(log(scenario.getEstimated()));
-            scenario.setSigma(pSeeker);
-            LogNormalDistribution ln1 =
-                    new LogNormalDistribution(
-                            scenario.getMu(),scenario.getSigma());
-            
-            //simulates scenario in the span of 1000 years
-            for(int i = 0; i < (scenario.getProbability() * 1000); i++ ){
-                Double d = ln1.sample();
-
-                //adds count to distribution slot
-                try{
-                    distribution[d.intValue()/10]++;
-                }catch(Exception e){
-                    System.out.println("Scenario "
-                            + scenario.getScenarioNumber() + ": " + e);
-                }
-                numberOfSimulations++;
-            }
-        }
-        //creates "Master scenario", representing all scenarios
-//        Mean mean = new Mean();
-        Scenario master = new Scenario();
-//        master.setEstimated((int)mean.evaluate(distribution));
-        long l = 0;
-        int s = 0;
-        for(int i=0; i < numberOfSlots;i++){
-            l = l + (int)distribution[i] * i;
-            s = s + (int)distribution[i];
-        }
-        master.setEstimated(((int)l/s)*10);
-        master.setMax(maxExpectedRange);
-//        master.setProbability(1.0);
-        master.setMu(log(master.getEstimated()));
-        master.setSigma(pSeeker);
-        
-        double[] distribution2 = new double[numberOfSlots];
-        
-        LogNormalDistribution ln2 =
-                    new LogNormalDistribution(
-                            master.getMu(),master.getSigma());
-                                        
-        for(int i=0; i < numberOfSimulations; i++){
-            Double d = ln2.sample();
-            //replaces values from 0.991+ with value from 0.990
-            try{
-                distribution2[d.intValue()/10]++;
-            }catch(Exception e){
-                System.out.println("Master distribution " + e);
-            }
-        }
-        
-        //TODO: move to separate class/method
-        //Create graph of functions
-        final NumberAxis xAxis = new NumberAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Damage");
-        xAxis.setLabel("Density");
-        
-        final LineChart<Number,Number> lineChart = new LineChart<>(xAxis,yAxis);
-        
-        XYChart.Series series = new XYChart.Series();
-        XYChart.Series series2 = new XYChart.Series();
-        
-        for(int i=0;i < numberOfSlots;i++){
-            series.getData().add(new XYChart.Data(i, distribution[i]));
-            series2.getData().add(new XYChart.Data(i, distribution2[i]));
-        }
-        Scene scene  = new Scene(lineChart,700,350);
-        lineChart.setCreateSymbols(false);
-        lineChart.getData().addAll(series, series2);
-       
-        stage.setScene(scene);
+        scenarios.clear();
+        Category c = execution;
+        c.calculateDistribution(pSeeker);
+        GraphCreator gc = new GraphCreator();
+        stage.setScene(gc.seScene(c));
         stage.show();
     }
     
