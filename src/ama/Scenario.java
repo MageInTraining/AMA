@@ -6,8 +6,8 @@
 package ama;
 
 import static ama.Constants.EXP_PERCENTILE;
+import static ama.Constants.MAGNIFICATION;
 import com.opencsv.bean.CsvBindByPosition;
-import static java.lang.Math.log;
 
 /**
  *
@@ -17,11 +17,14 @@ public class Scenario implements java.io.Serializable{
     @CsvBindByPosition(position = 0)
     private int scenarioNumber;
     @CsvBindByPosition(position = 1)
-    private int estimated;
+    private int riskTypeBL2;
     @CsvBindByPosition(position = 2)
-    private double probability;
+    private double estimated;
     @CsvBindByPosition(position = 3)
-    private int max;
+    private double probability;
+    @CsvBindByPosition(position = 4)
+    private double max;
+    
     private double mu;
     private double sigma;
     
@@ -32,13 +35,13 @@ public class Scenario implements java.io.Serializable{
     public int getScenarioNumber(){
         return scenarioNumber;
     }
-    public int getEstimated(){
+    public double getEstimated(){
         return estimated;
     }
     public double getProbability(){
         return probability;
     }
-    public int getMax(){
+    public double getMax(){
         return max;
     }
     public double getMu(){
@@ -47,24 +50,30 @@ public class Scenario implements java.io.Serializable{
     public double getSigma(){
         return sigma;
     }
-    /**Setter*/
+    public int getRiskType(){
+        return riskTypeBL2;
+    }
+    /**Setters*/
     public void setScenarioNumber(int n){
        scenarioNumber = n; 
     }
-    public void setEstimated(int e){
-        estimated = e;
+    public void setEstimated(double e){
+        estimated = e * MAGNIFICATION;
     }
     public void setProbability(double p){
         probability = p;
     }
-    public void setMax(int m){
-        max = m;
+    public void setMax(double m){
+        max = m * MAGNIFICATION;
     }
     public void setMu(double m){
         mu = m;
     }
     public void setSigma(PercentileSeeker ps){
         sigma =ps.getSigmaPerPercentile(EXP_PERCENTILE,
-                                                max, log(estimated));
+                                                max, mu);
+    }
+    public void setRiskType(int r){
+        riskTypeBL2 = r;
     }
 }
