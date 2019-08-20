@@ -18,7 +18,6 @@ import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 import org.apache.commons.math3.distribution.LogNormalDistribution;
-import org.apache.commons.math3.stat.descriptive.moment.Mean;
 
 /**
  *
