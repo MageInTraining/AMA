@@ -5,6 +5,7 @@
  */
 package ama;
 
+import static ama.Constants.MAGNIFICATION;
 import static ama.Constants.NUMBER_OF_YEARS;
 import static java.lang.Math.log;
 import java.util.ArrayList;
@@ -19,11 +20,18 @@ public class Category {
     private List<Scenario> scenarios;
     private double threshold;
     private double maxRange;
-    private double[] distribution;
+    private int[] distribution;
     
     public Category(){
         scenarios = new ArrayList();
-        distribution = new double[50];
+        threshold = 1 * MAGNIFICATION;
+        maxRange = 0.0;  
+    };
+    
+    public Category(double t){
+        scenarios = new ArrayList();
+        threshold = t * MAGNIFICATION;
+        maxRange = 0.0;  
     };
     
     /**Getters**/
@@ -33,10 +41,10 @@ public class Category {
     public double getThreshold(){
         return threshold;
     }
-    public double getMaxRange(){
+    public Double getMaxRange(){
         return maxRange;
     }
-    public double getDistribution(int i){
+    public int getDistribution(int i){
         return distribution[i];
     }
     
@@ -56,6 +64,7 @@ public class Category {
     
     /**Other methods**/
     public void calculateDistribution(PercentileSeeker pSeeker){
+        distribution = new int[(int)maxRange];
         for (Scenario scenario : scenarios){
             //creates lognormal distribution for the scenario
             scenario.setMu(log(scenario.getEstimated()));
@@ -66,13 +75,14 @@ public class Category {
             //simulates scenario in the span of 1000 years
             for(int i = 0; i < (scenario.getProbability() * NUMBER_OF_YEARS); i++ ){
                 Double d = lnd.sample();
-
-                //adds count to distribution slot
-                try{
-                    distribution[d.intValue()/10]++;
-                }catch(Exception e){
-                    System.out.println("Scenario "
-                            + scenario.getScenarioNumber() + ": " + e);
+                if(d<=scenario.getMax() && d>= threshold){
+                    try{
+                        distribution[d.intValue()]++;
+                    }catch(Exception e){
+                        System.out.println("Scenario "
+                            + scenario.getScenarioNumber() + ": " + e + ":" +
+                                d);
+                    }
                 }
             }
         }
