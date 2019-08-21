@@ -27,8 +27,9 @@ public class GraphCreator {
         final LineChart<Number,Number> lineChart = new LineChart<>(xAxis,yAxis);
         
         XYChart.Series series = new XYChart.Series();
-        
-        for(int i=0;i < 50;i++){
+        //int r = c.getMaxRange().intValue();
+        int r = 200;
+        for(int i=0;i < r;i++){
             series.getData().add(new XYChart.Data(i, c.getDistribution(i)));
         }
         lineChart.setCreateSymbols(false);
