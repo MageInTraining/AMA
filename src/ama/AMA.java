@@ -92,7 +92,7 @@ public class AMA extends Application{
             }
         }
         scenarios.clear();
-        Category c = fraud;
+        Category c = notSet;
         c.calculateDistribution(pSeeker);
         GraphCreator gc = new GraphCreator();
         stage.setScene(gc.seScene(c));
