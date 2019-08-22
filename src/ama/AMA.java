@@ -11,7 +11,6 @@ import java.util.List;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.apache.commons.math3.distribution.LogNormalDistribution;
 
 /**
  *
@@ -92,7 +91,7 @@ public class AMA extends Application{
             }
         }
         scenarios.clear();
-        Category c = notSet;
+        Category c = improperPractices;
         c.calculateDistribution(pSeeker);
         GraphCreator gc = new GraphCreator();
         stage.setScene(gc.seScene(c));
