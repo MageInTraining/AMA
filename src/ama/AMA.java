@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package ama;
+import static ama.Constants.NUMBER_OF_YEARS;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -39,6 +40,10 @@ public class AMA extends Application{
         for (Scenario scenario : scenarios){
             int s = scenario.getRiskType();
             double d = scenario.getMax();
+            //fucking up probability- Zahors bed
+            if(scenario.getProbability()>1.0){
+                scenario.setProbability(1.0);
+            }
             switch(s) {
                 case 1:
                     fraud.addToList(scenario);
@@ -91,11 +96,14 @@ public class AMA extends Application{
             }
         }
         scenarios.clear();
-        Category c = improperPractices;
+        Category c = fraud;
         c.calculateDistribution(pSeeker);
-        GraphCreator gc = new GraphCreator();
-        stage.setScene(gc.seScene(c));
-        stage.show();
+//        GraphCreator gc = new GraphCreator();
+//        stage.setScene(gc.seScene(c));
+//        stage.show();
+        for(int i=0;i<5;i++){
+            System.out.println("Bucket " + (i + 1) +" : " + (NUMBER_OF_YEARS/(double)c.getDistribution(i)));
+        }
     }
     
         /**
