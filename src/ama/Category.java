@@ -5,7 +5,6 @@
  */
 package ama;
 
-import static ama.Constants.MAGNIFICATION;
 import static ama.Constants.NUMBER_OF_YEARS;
 import static java.lang.Math.log;
 import java.util.ArrayList;
@@ -24,13 +23,13 @@ public class Category {
     
     public Category(){
         scenarios = new ArrayList();
-        threshold = 1 * MAGNIFICATION;
+        threshold = 1;
         maxRange = 0.0;  
     };
     
     public Category(double t){
         scenarios = new ArrayList();
-        threshold = t * MAGNIFICATION;
+        threshold = t;
         maxRange = 0.0;  
     };
     
@@ -64,7 +63,7 @@ public class Category {
     
     /**Other methods**/
     public void calculateDistribution(PercentileSeeker pSeeker){
-        distribution = new int[(int)maxRange];
+        distribution = new int[5];
         for (Scenario scenario : scenarios){
             //creates lognormal distribution for the scenario
             scenario.setMu(log(scenario.getEstimated()));
@@ -77,7 +76,23 @@ public class Category {
                 Double d = lnd.sample();
                 if(d<=scenario.getMax() && d>= threshold){
                     try{
-                        distribution[d.intValue()]++;
+                        if(d>50){
+                            distribution[4]++;
+                        }else{
+                            if(d>30){
+                                distribution[3]++;
+                            }else{
+                                if(d>10){
+                                    distribution[2]++;
+                                }else{
+                                    if(d>5){
+                                        distribution[1]++;
+                                    }else{
+                                        distribution[0]++;
+                                    }
+                                }
+                            }
+                        }
                     }catch(Exception e){
                         System.out.println("Scenario "
                             + scenario.getScenarioNumber() + ": " + e + ":" +
