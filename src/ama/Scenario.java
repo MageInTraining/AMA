@@ -6,7 +6,6 @@
 package ama;
 
 import static ama.Constants.EXP_PERCENTILE;
-import static ama.Constants.MAGNIFICATION;
 import com.opencsv.bean.CsvBindByPosition;
 
 /**
@@ -58,19 +57,19 @@ public class Scenario implements java.io.Serializable{
        scenarioNumber = n; 
     }
     public void setEstimated(double e){
-        estimated = e * MAGNIFICATION;
+        estimated = e;
     }
     public void setProbability(double p){
         probability = p;
     }
     public void setMax(double m){
-        max = m * MAGNIFICATION;
+        max = m;
     }
     public void setMu(double m){
         mu = m;
     }
-    public void setSigma(PercentileSeeker ps){
-        sigma =ps.getSigmaPerPercentile(EXP_PERCENTILE,
+    public void setSigma(){
+        sigma =PercentileSeeker.getSigmaPerPercentile(EXP_PERCENTILE,
                                                 max, mu);
     }
     public void setRiskType(int r){

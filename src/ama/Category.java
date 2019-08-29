@@ -6,6 +6,7 @@
 package ama;
 
 import static ama.Constants.NUMBER_OF_YEARS;
+import com.opencsv.CSVWriter;
 import static java.lang.Math.log;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ public class Category {
     private double threshold;
     private double maxRange;
     private int[] distribution;
+    private String categoryName;
+    private double[] buckets;
     
     public Category(){
         scenarios = new ArrayList();
@@ -33,6 +36,13 @@ public class Category {
         maxRange = 0.0;  
     };
     
+    public Category(String name, double t){
+        scenarios = new ArrayList();
+        threshold = t;
+        maxRange = 0.0;
+        categoryName = name;
+    };
+    
     /**Getters**/
     public List<Scenario> getList(){
         return scenarios;
@@ -43,8 +53,14 @@ public class Category {
     public Double getMaxRange(){
         return maxRange;
     }
-    public int getDistribution(int i){
-        return distribution[i];
+    public int getDistribution(int index){
+        return distribution[index];
+    }    
+    public String getCategoryName(){
+        return categoryName;
+    }
+    public double getBucket(int index){
+        return buckets[index];
     }
     
     /**Setters**/
@@ -60,46 +76,41 @@ public class Category {
     public void addToDistribution(int position){
         distribution[position]++;
     }
+    public void setCategoryName(String name){
+        categoryName = name;
+    }
     
     /**Other methods**/
-    public void calculateDistribution(PercentileSeeker pSeeker){
-        distribution = new int[5];
+    public void calculateDistribution(CSVWriter writer){
+        distribution = new int[(int)maxRange];
+        buckets = new double[5];
         for (Scenario scenario : scenarios){
-            //creates lognormal distribution for the scenario
             scenario.setMu(log(scenario.getEstimated()));
-            scenario.setSigma(pSeeker);
+            scenario.setSigma();
             LogNormalDistribution lnd =
                     new LogNormalDistribution(
                             scenario.getMu(),scenario.getSigma());
-            //simulates scenario in the span of 1000 years
             for(int i = 0; i < (scenario.getProbability() * NUMBER_OF_YEARS); i++ ){
                 Double d = lnd.sample();
-                if(d<=scenario.getMax() && d>= threshold){
-                    try{
-                        if(d>50){
-                            distribution[4]++;
-                        }else{
-                            if(d>30){
-                                distribution[3]++;
-                            }else{
-                                if(d>10){
-                                    distribution[2]++;
-                                }else{
-                                    if(d>5){
-                                        distribution[1]++;
-                                    }else{
-                                        distribution[0]++;
-                                    }
-                                }
-                            }
-                        }
-                    }catch(Exception e){
-                        System.out.println("Scenario "
-                            + scenario.getScenarioNumber() + ": " + e + ":" +
-                                d);
-                    }
+                if(d<=scenario.getMax() && scenario.getEstimated() >= threshold){
+                    Distributor.distribute(distribution, threshold, d);
+                    String entry = scenario.getScenarioNumber()
+                                + ","
+                                + scenario.getRiskType()
+                                + ","
+                                + scenario.getEstimated()
+                                + ","
+                                + scenario.getProbability()
+                                + ","
+                                + scenario.getMax()
+                                + ","
+                                + d
+                                ;                                   
+                    String[] entries = entry.split(",");
+                    writer.writeNext(entries);
                 }
             }
         }
+        Distributor.putInBucket(distribution, buckets, (int)maxRange);
     }
 }

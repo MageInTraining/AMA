@@ -15,7 +15,7 @@ import static java.lang.Math.log;
 public class PercentileSeeker {
     // get sigma parametr of lognormal distribution with give mu parametr amd
     // given variable x being in given percentile of this distribution
-    double getSigmaPerPercentile(double expectPercentile, double x, double mu){
+    public static double getSigmaPerPercentile(double expectPercentile, double x, double mu){
         double p = 1;
         double s = 0;
         while (p > expectPercentile){
@@ -28,13 +28,13 @@ public class PercentileSeeker {
     // get percentile for x variable being placed in lognormal distribution with
     // mu and sigma parameters, e.g. probability, that random variable is
     // bellow x on lognormal distribution curve  
-    private double getPercentile(double x, double mu, double sigma){
+    private static double getPercentile(double x, double mu, double sigma){
         return CNDF((log(x)-mu)/sigma);
     }
     
     // returns the cumulative normal distribution function (CNDF)
     // for a standard normal: N(0,1)
-    private double CNDF(double x)
+    private static double CNDF(double x)
     {
         int neg = (x < 0d) ? 1 : 0;
         if ( neg == 1) 
