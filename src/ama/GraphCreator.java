@@ -29,7 +29,7 @@ public class GraphCreator {
         
         XYChart.Series series = new XYChart.Series();
         int r = c.getMaxRange().intValue();
-        for(int i=0;i < r;i++){
+        for(int i = 0 ;i < r; i++){
             series.getData().add(new XYChart.Data(i, log(c.getDistribution(i))));
         }
         lineChart.setCreateSymbols(false);
