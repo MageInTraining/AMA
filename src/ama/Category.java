@@ -92,7 +92,7 @@ public class Category {
                             scenario.getMu(),scenario.getSigma());
             for(int i = 0; i < (scenario.getProbability() * NUMBER_OF_YEARS); i++ ){
                 Double d = lnd.sample();
-                if(d<=scenario.getMax() && scenario.getEstimated() >= threshold){
+                if(d<=scenario.getMax() && scenario.getMax() >= threshold){
                     Distributor.distribute(distribution, threshold, d);
                     String entry = scenario.getScenarioNumber()
                                 + ","
