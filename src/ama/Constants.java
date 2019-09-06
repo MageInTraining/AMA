@@ -17,5 +17,5 @@ public interface Constants {
     //percentile, for which we are looking
     public static final double EXP_PERCENTILE = 0.99;
     //number of years, for which we run simulation
-    public static final int NUMBER_OF_YEARS = 100000;
+    public static final int NUMBER_OF_YEARS = 1000;
 }
