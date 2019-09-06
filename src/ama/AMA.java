@@ -26,7 +26,6 @@ public class AMA extends Application{
     public void start(Stage stage) throws FileNotFoundException, IOException{
         
         //TODO: give path to csv file as parametr
-//        String file_name= "C:\\Users\\cen62777\\Documents\\Rizika_big.csv";
         String file_name= "C:\\Users\\cen62777\\Documents\\Rizika_big.csv";
         //creates list of scenarios, provided in csv file
         List<Scenario> scenarios =
@@ -107,9 +106,9 @@ public class AMA extends Application{
                 new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\log_" + c.getCategoryName()+".csv"), '\t', '\0', '\0', "\n");
         c.calculateDistribution(writer);
         writer.close();
-        for(int i = 0; i < 5; i++){
-            System.out.println(" Bucket " + (i+1) +" : " + (NUMBER_OF_YEARS/(c.getBucket(i))));
-        }
+//        for(int i = 0; i < 5; i++){
+//            System.out.println(" Bucket " + (i+1) +" : " + (NUMBER_OF_YEARS/(c.getBucket(i))));
+//        }
         GraphCreator gc = new GraphCreator();
         stage.setScene(gc.seScene(c));
         stage.show();

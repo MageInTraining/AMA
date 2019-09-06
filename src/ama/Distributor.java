@@ -35,7 +35,7 @@ public class Distributor {
                     b=4;
                     break;
             }
-            System.out.println("Distribution slot " + i + " : " + distribution[i]);
+//            System.out.println("Distribution slot " + i + " : " + distribution[i]);
             buckets[b]=buckets[b]+distribution[i];
         }
     }

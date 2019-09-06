@@ -23,6 +23,7 @@ public class Category {
     private int[] distribution;
     private String categoryName;
     private double[] buckets;
+    private double[] bucketRatios;
     
     public Category(){
         scenarios = new ArrayList();
@@ -62,6 +63,9 @@ public class Category {
     public double getBucket(int index){
         return buckets[index];
     }
+    public double getBucketRatio(int index){
+        return bucketRatios[index];
+    }
     
     /**Setters**/
     public void addToList(Scenario e){
@@ -73,17 +77,21 @@ public class Category {
     public void setMaxRange(double r){
         maxRange = r;
     }
-    public void addToDistribution(int position){
-        distribution[position]++;
+    public void addToDistribution(int index){
+        distribution[index]++;
     }
     public void setCategoryName(String name){
         categoryName = name;
+    }
+    public void setBucketRatio(int index, double value){
+        bucketRatios[index]= value;
     }
     
     /**Other methods**/
     public void calculateDistribution(CSVWriter writer){
         distribution = new int[(int)maxRange];
         buckets = new double[5];
+        bucketRatios = new double[5];
         for (Scenario scenario : scenarios){
             scenario.setMu(log(scenario.getEstimated()));
             scenario.setSigma();
@@ -94,23 +102,32 @@ public class Category {
                 Double d = lnd.sample();
                 if(d<=scenario.getMax() && scenario.getMax() >= threshold){
                     Distributor.distribute(distribution, threshold, d);
-                    String entry = scenario.getScenarioNumber()
-                                + ","
-                                + scenario.getRiskType()
-                                + ","
-                                + scenario.getEstimated()
-                                + ","
-                                + scenario.getProbability()
-                                + ","
-                                + scenario.getMax()
-                                + ","
-                                + d
-                                ;                                   
-                    String[] entries = entry.split(",");
-                    writer.writeNext(entries);
+//                    //logging simulation output into a csv file
+//                    String entry = scenario.getScenarioNumber()
+//                                + ","
+//                                + scenario.getRiskType()
+//                                + ","
+//                                + scenario.getEstimated()
+//                                + ","
+//                                + scenario.getProbability()
+//                                + ","
+//                                + scenario.getMax()
+//                                + ","
+//                                + d
+//                                ;                                   
+//                    String[] entries = entry.split(",");
+//                    writer.writeNext(entries);
                 }
             }
         }
         Distributor.putInBucket(distribution, buckets, (int)maxRange);
+        double sumOfBuckets = 0.0;
+        for(Double bucket:buckets){
+            sumOfBuckets = sumOfBuckets + bucket; 
+        }
+        for(int i=0;i<5;i++){
+            bucketRatios[i]=buckets[i]/sumOfBuckets;
+            System.out.format("Buckets ratio of buckets number " + (i+1) + " : " + "%.5f%n", bucketRatios[i]);
+        }
     }
 }
