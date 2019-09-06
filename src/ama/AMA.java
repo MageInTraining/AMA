@@ -34,10 +34,10 @@ public class AMA extends Application{
                             .build().parse();
         
         //individual list of scenarios for each of (Erste?) groups
-        Category fraud = new Category("fraud", 0.6);
-        Category improperPractices= new Category("improperPractices", 0.16);
-        Category infrastructure = new Category("infrastructure", 0.16);
-        Category execution = new Category("execution", 0.5);
+        Category fraud = new Category("fraud", 0.6, 1.3636);
+        Category improperPractices= new Category("improperPractices", 0.16, 0.6);
+        Category infrastructure = new Category("infrastructure", 0.1, 0.3756);
+        Category execution = new Category("execution", 0.5, 1.9167);
         Category notSet = new Category();
         
         for (Scenario scenario : scenarios){
@@ -101,7 +101,7 @@ public class AMA extends Application{
             }
         }
         scenarios.clear();
-        Category c = execution;
+        Category c = infrastructure;
         CSVWriter writer =
                 new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\log_" + c.getCategoryName()+".csv"), '\t', '\0', '\0', "\n");
         c.calculateDistribution(writer);
@@ -109,9 +109,9 @@ public class AMA extends Application{
 //        for(int i = 0; i < 5; i++){
 //            System.out.println(" Bucket " + (i+1) +" : " + (NUMBER_OF_YEARS/(c.getBucket(i))));
 //        }
-        GraphCreator gc = new GraphCreator();
-        stage.setScene(gc.seScene(c));
-        stage.show();
+//        GraphCreator gc = new GraphCreator();
+//        stage.setScene(gc.seScene(c));
+//        stage.show();
     }
     
         /**

@@ -24,6 +24,7 @@ public class Category {
     private String categoryName;
     private double[] buckets;
     private double[] bucketRatios;
+    private double eventPerYear;
     
     public Category(){
         scenarios = new ArrayList();
@@ -42,6 +43,14 @@ public class Category {
         threshold = t;
         maxRange = 0.0;
         categoryName = name;
+    };
+    
+    public Category(String name, double t, double e){
+        scenarios = new ArrayList();
+        threshold = t;
+        maxRange = 0.0;
+        categoryName = name;
+        eventPerYear = e;
     };
     
     /**Getters**/
@@ -127,7 +136,11 @@ public class Category {
         }
         for(int i=0;i<5;i++){
             bucketRatios[i]=buckets[i]/sumOfBuckets;
-            System.out.format("Buckets ratio of buckets number " + (i+1) + " : " + "%.5f%n", bucketRatios[i]);
+//            System.out.format("Buckets ratio of buckets number " + (i+1) + " : " + "%.5f%n", bucketRatios[i]);
+        }
+        double x = (100/bucketRatios[0])*eventPerYear;
+        for(int i=0; i<5; i++){
+            System.out.format("For category " + categoryName + ", events in bucket " + (i+1)+ " happen once every %.5f year%n", 1/((bucketRatios[i]*x)/100));
         }
     }
 }
