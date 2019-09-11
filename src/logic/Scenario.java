@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ama;
+package logic;
 
-import static ama.Constants.EXP_PERCENTILE;
+import static logic.Constants.EXP_PERCENTILE;
 import com.opencsv.bean.CsvBindByPosition;
 
 /**
@@ -14,14 +14,16 @@ import com.opencsv.bean.CsvBindByPosition;
  */
 public class Scenario implements java.io.Serializable{
     @CsvBindByPosition(position = 0)
-    private int scenarioNumber;
+    private String riskCardID;
     @CsvBindByPosition(position = 1)
-    private int riskTypeBL2;
+    private int scenarioNumber;
     @CsvBindByPosition(position = 2)
-    private double estimated;
+    private int riskTypeBL2;
     @CsvBindByPosition(position = 3)
-    private double probability;
+    private double estimated;
     @CsvBindByPosition(position = 4)
+    private double probability;
+    @CsvBindByPosition(position = 5)
     private double max;
     
     private double mu;
@@ -31,6 +33,9 @@ public class Scenario implements java.io.Serializable{
     }
     
     /**Getters**/
+    public String getRiskardID(){
+        return riskCardID;
+    }
     public int getScenarioNumber(){
         return scenarioNumber;
     }
@@ -53,6 +58,9 @@ public class Scenario implements java.io.Serializable{
         return riskTypeBL2;
     }
     /**Setters*/
+    public void setRiskCardID(String id){
+        riskCardID = id;
+    }
     public void setScenarioNumber(int n){
        scenarioNumber = n; 
     }

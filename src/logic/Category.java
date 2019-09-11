@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ama;
+package logic;
 
-import static ama.Constants.NUMBER_OF_YEARS;
+import static logic.Constants.NUMBER_OF_YEARS;
 import com.opencsv.CSVWriter;
 import static java.lang.Math.log;
 import java.util.ArrayList;
@@ -111,21 +111,21 @@ public class Category {
                 Double d = lnd.sample();
                 if(d<=scenario.getMax() && scenario.getMax() >= threshold){
                     Distributor.distribute(distribution, threshold, d);
-//                    //logging simulation output into a csv file
-//                    String entry = scenario.getScenarioNumber()
-//                                + ","
-//                                + scenario.getRiskType()
-//                                + ","
-//                                + scenario.getEstimated()
-//                                + ","
-//                                + scenario.getProbability()
-//                                + ","
-//                                + scenario.getMax()
-//                                + ","
-//                                + d
-//                                ;                                   
-//                    String[] entries = entry.split(",");
-//                    writer.writeNext(entries);
+                    //logging simulation output into a csv file
+                    String entry = scenario.getScenarioNumber()
+                                + ","
+                                + scenario.getRiskType()
+                                + ","
+                                + scenario.getEstimated()
+                                + ","
+                                + scenario.getProbability()
+                                + ","
+                                + scenario.getMax()
+                                + ","
+                                + d
+                                ;                                   
+                    String[] entries = entry.split(",");
+                    writer.writeNext(entries);
                 }
             }
         }
