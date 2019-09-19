@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package ama.containers;
 
-import static logic.Constants.NUMBER_OF_YEARS;
+import ama.servitors.Distributor;
+import static ama.Constants.NUMBER_OF_YEARS;
 import com.opencsv.CSVWriter;
 import static java.lang.Math.log;
 import java.util.ArrayList;

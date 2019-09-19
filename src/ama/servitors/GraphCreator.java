@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package ama.servitors;
 
+import ama.containers.Category;
 import static java.lang.Math.log;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;

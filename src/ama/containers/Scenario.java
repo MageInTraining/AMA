@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package ama.containers;
 
-import static logic.Constants.EXP_PERCENTILE;
+import ama.servitors.PercentileSeeker;
+import static ama.Constants.EXP_PERCENTILE;
 import com.opencsv.bean.CsvBindByPosition;
 
 /**
