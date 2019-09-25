@@ -136,7 +136,7 @@ public class Category {
         }
         for(int i=0;i<5;i++){
             bucketRatios[i]=buckets[i]/sumOfBuckets;
-//            System.out.format("Buckets ratio of buckets number " + (i+1) + " : " + "%.5f%n", bucketRatios[i]);
+            System.out.format("Buckets ratio of buckets number " + (i+1) + " : " + "%.5f%n", bucketRatios[i]);
         }
         double x = (100/bucketRatios[0])*eventPerYear;
         for(int i=0; i<5; i++){
