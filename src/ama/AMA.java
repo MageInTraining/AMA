@@ -26,7 +26,7 @@ public class AMA extends Application{
     public void start(Stage stage) throws FileNotFoundException, IOException{
         
         //TODO: give path to csv file as parametr
-        String file_name= "C:\\Users\\cen62777\\Documents\\Rizika_big.csv";
+        String file_name= "C:\\Users\\cen62777\\Documents\\Rizika.csv";
         //creates list of scenarios, provided in csv file
         List<Scenario> scenarios =
                     new CsvToBeanBuilder(new FileReader(file_name))
