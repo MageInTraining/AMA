@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package ama;
-import static ama.Constants.NUMBER_OF_YEARS;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileNotFoundException;
@@ -13,8 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
 
 /**
  *
