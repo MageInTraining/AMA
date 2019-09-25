@@ -20,10 +20,11 @@ import javafx.stage.Stage;
  *
  * @author cen62777
  */
-public class AMA extends Application{
-
-    @Override
-    public void start(Stage stage) throws FileNotFoundException, IOException{
+public class AMA {  
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws FileNotFoundException, IOException{
         
         //TODO: give path to csv file as parametr
         String file_name= "C:\\Users\\cen62777\\Documents\\Rizika_big.csv";
@@ -106,18 +107,5 @@ public class AMA extends Application{
                 new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\log_" + c.getCategoryName()+".csv"), '\t', '\0', '\0', "\n");
         c.calculateDistribution(writer);
         writer.close();
-//        for(int i = 0; i < 5; i++){
-//            System.out.println(" Bucket " + (i+1) +" : " + (NUMBER_OF_YEARS/(c.getBucket(i))));
-//        }
-//        GraphCreator gc = new GraphCreator();
-//        stage.setScene(gc.seScene(c));
-//        stage.show();
-    }
-    
-        /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
     }
 }
