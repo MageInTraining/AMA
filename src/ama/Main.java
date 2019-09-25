@@ -43,7 +43,7 @@ public class Main extends Application{
             primaryStage.setTitle("Advanced Measuring Aproach");
             primaryStage.show();
                //TODO: give path to csv file as parametr
-            String fileName= "C:\\Users\\cen62777\\Documents\\Rizika.csv";
+            String fileName= "C:\\Users\\cen62777\\Documents\\Rizika_small.csv";
 
             //individual list of scenarios for each of (Erste?) groups
             Category fraud = new Category("fraud", 0.6, 1.3636);
@@ -60,7 +60,7 @@ public class Main extends Application{
                     , execution
                     , notSet);
 
-            Category c = execution;
+            Category c = infrastructure;
             CSVWriter writer =
                     new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\log_" + c.getCategoryName()+".csv"), '\t', '\0', '\0', "\n");
             c.calculateDistribution(writer);
