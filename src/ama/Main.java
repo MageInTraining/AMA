@@ -62,7 +62,8 @@ public class Main extends Application{
 
             Category c = infrastructure;
             CSVWriter writer =
-                    new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\log_" + c.getCategoryName()+".csv"), '\t', '\0', '\0', "\n");
+                    new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\log_"
+                            + c.getCategoryName()+".csv"), '\t', '\0', '\0', "\n");
             c.calculateDistribution(writer);
             writer.close(); 
         } catch (Exception ex) {

@@ -5,6 +5,7 @@
  */
 package ama.servitors;
 
+import ama.containers.BlacklistItem;
 import ama.containers.Category;
 import ama.containers.Scenario;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -22,34 +23,34 @@ public class Sorter {
     public static List<Scenario> extractScenarios(String fileName) throws FileNotFoundException{
         List<Scenario> scenarios =
                     new CsvToBeanBuilder(new FileReader(fileName))
-                        .withType(Scenario.class).withSeparator(';')
+                        .withType(Scenario.class).withSeparator('\t')
                             .build().parse();
         return scenarios;
     }
     
-    public static List<String> getBlacklist(){
-        List<String> blacklist  = new ArrayList();
-            blacklist.add("KR29");
-            blacklist.add("KR35");
-            blacklist.add("KR32");
-            blacklist.add("KR34");
-            blacklist.add("KR35");
-            blacklist.add("KR36");
-            blacklist.add("KR37");
-            blacklist.add("KR38");
-            blacklist.add("KR40");
-            blacklist.add("KR41");
-            blacklist.add("KR42");
-            blacklist.add("KR57");
-            blacklist.add("KR69");
-            blacklist.add("KR78");
-            blacklist.add("KR81");
-            blacklist.add("KR99");
+    public static List<BlacklistItem> getBlacklist(){
+        List<BlacklistItem> blacklist  = new ArrayList();
+            blacklist.add(new BlacklistItem("KR29"));
+            blacklist.add(new BlacklistItem("KR35"));
+            blacklist.add(new BlacklistItem("KR32"));
+            blacklist.add(new BlacklistItem("KR34"));
+            blacklist.add(new BlacklistItem("KR35"));
+            blacklist.add(new BlacklistItem("KR36"));
+            blacklist.add(new BlacklistItem("KR37"));
+            blacklist.add(new BlacklistItem("KR38"));
+            blacklist.add(new BlacklistItem("KR40"));
+            blacklist.add(new BlacklistItem("KR41"));
+            blacklist.add(new BlacklistItem("KR42"));
+            blacklist.add(new BlacklistItem("KR57"));
+            blacklist.add(new BlacklistItem("KR69"));
+            blacklist.add(new BlacklistItem("KR78"));
+            blacklist.add(new BlacklistItem("KR81"));
+            blacklist.add(new BlacklistItem("KR99"));
         return blacklist;
     }
     
     public static void sortScenarios(
-            List<String> blacklist
+            List<BlacklistItem> blacklist
             , List<Scenario> scenarios
             , Category fraud
             , Category improperPractices
@@ -60,8 +61,9 @@ public class Sorter {
         for (Scenario scenario : scenarios){
             int s = scenario.getRiskType();
             double d = scenario.getMax();
-            for (String b : blacklist){
-                if(scenario.getRiskardID()==b){
+            for (BlacklistItem b : blacklist){
+                if(scenario.getRiskardID().equals(b.getRiskCardID()) ||
+                        scenario.getScenarioNumber()==b.getScenarioNumber()){
                     s = 0;
                 }
             }

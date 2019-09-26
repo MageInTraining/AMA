@@ -32,6 +32,12 @@ public class Scenario implements java.io.Serializable{
     
     public Scenario(){
     }
+    public Scenario(String id){
+        this.riskCardID = id;
+    }
+    public Scenario(int scenarioNumber){
+        this.scenarioNumber = scenarioNumber;
+    }
     
     /**Getters**/
     public String getRiskardID(){
