@@ -14,20 +14,21 @@ public class BlacklistItem {
     private int scenarioNumber;
     
     public BlacklistItem(String riskCardID){
-        this.riskCardID = riskCardID;
+        riskCardID = riskCardID;
+        scenarioNumber = 0;
     }
-    public BlacklistItem(int scenarioNumber){
-        this.scenarioNumber = scenarioNumber;
-    }
+//    public BlacklistItem(int scenarioNumber){
+//        this.scenarioNumber = scenarioNumber;
+//    }
     public BlacklistItem(String riskCardID, int scenarioNumber){
-        this.riskCardID = riskCardID;
-        this.scenarioNumber = scenarioNumber;
+        riskCardID = riskCardID;
+        scenarioNumber = scenarioNumber;
     }
     /**Getters**/
     public String getRiskCardID(){
-        return this.riskCardID;
+        return riskCardID;
     }
     public int getScenarioNumber(){
-        return this.getScenarioNumber();
+        return getScenarioNumber();
     }
 }
