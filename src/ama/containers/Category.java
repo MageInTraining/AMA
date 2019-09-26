@@ -73,8 +73,20 @@ public class Category {
     public double getBucket(int index){
         return buckets[index];
     }
+    public double[] getBuckets(){
+        return buckets;
+    }
     public double getBucketRatio(int index){
         return bucketRatios[index];
+    }
+    public List<Scenario> getScenarios(){
+        return scenarios;
+    }
+    public int[] getDistribution(){
+        return distribution;
+    }
+    public double getEventsPerYear(){
+        return eventPerYear;
     }
     
     /**Setters**/
@@ -96,52 +108,13 @@ public class Category {
     public void setBucketRatio(int index, double value){
         bucketRatios[index]= value;
     }
-    
-    /**Other methods**/
-    public void calculateDistribution(CSVWriter writer){
-        distribution = new int[(int)maxRange];
-        buckets = new double[5];
-        bucketRatios = new double[5];
-        for (Scenario scenario : scenarios){
-            scenario.setMu(log(scenario.getEstimated()));
-            scenario.setSigma();
-            LogNormalDistribution lnd =
-                    new LogNormalDistribution(
-                            scenario.getMu(),scenario.getSigma());
-            for(int i = 0; i < (scenario.getProbability() * NUMBER_OF_YEARS); i++ ){
-                Double d = lnd.sample();
-                if(d<=scenario.getMax() && scenario.getMax() >= threshold){
-                    Distributor.distribute(distribution, threshold, d);
-                    //logging simulation output into a csv file
-                    String entry = scenario.getScenarioNumber()
-                                + ","
-                                + scenario.getRiskType()
-                                + ","
-                                + scenario.getEstimated()
-                                + ","
-                                + scenario.getProbability()
-                                + ","
-                                + scenario.getMax()
-                                + ","
-                                + d
-                                ;                                   
-                    String[] entries = entry.split(",");
-                    writer.writeNext(entries);
-                }
-            }
-        }
-        Distributor.putInBucket(distribution, buckets, (int)maxRange);
-        double sumOfBuckets = 0.0;
-        for(Double bucket:buckets){
-            sumOfBuckets = sumOfBuckets + bucket; 
-        }
-        for(int i=0;i<5;i++){
-            bucketRatios[i]=buckets[i]/sumOfBuckets;
-            System.out.format("Buckets ratio of buckets number " + (i+1) + " : " + "%.5f%n", bucketRatios[i]);
-        }
-        double x = (100/bucketRatios[0])*eventPerYear;
-        for(int i=0; i<5; i++){
-            System.out.format("For category " + categoryName + ", events in bucket " + (i+1)+ " happen once every %.5f year%n", 1/((bucketRatios[i]*x)/100));
-        }
+    public void setBucketRatios(double[] bRatios){
+        bucketRatios = bRatios;
+    }
+    public void setDistribution(int[] dist){
+        distribution = dist;
+    }
+    public void setBuckets(double[] bucks){
+        buckets = bucks;
     }
 }

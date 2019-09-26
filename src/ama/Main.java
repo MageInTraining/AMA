@@ -5,6 +5,7 @@
  */
 package ama;
 import ama.containers.Category;
+import ama.servitors.Distributor;
 import ama.servitors.Sorter;
 import com.opencsv.CSVWriter;
 import java.io.FileNotFoundException;
@@ -64,7 +65,8 @@ public class Main extends Application{
             CSVWriter writer =
                     new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\log_"
                             + c.getCategoryName()+".csv"), '\t', '\0', '\0', "\n");
-            c.calculateDistribution(writer);
+            Distributor.calculateDistribution(writer, c);
+//            c.calculateDistribution(writer);
             writer.close(); 
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
