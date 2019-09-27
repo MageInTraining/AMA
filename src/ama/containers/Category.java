@@ -5,13 +5,8 @@
  */
 package ama.containers;
 
-import ama.servitors.Distributor;
-import static ama.Constants.NUMBER_OF_YEARS;
-import com.opencsv.CSVWriter;
-import static java.lang.Math.log;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.math3.distribution.LogNormalDistribution;
 
 /**
  *
@@ -89,7 +84,7 @@ public class Category {
         return eventPerYear;
     }
     
-    /**Setters**/
+    /**Setter*/
     public void addToList(Scenario e){
         scenarios.add(e);
     }
