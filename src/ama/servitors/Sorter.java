@@ -5,9 +5,9 @@
  */
 package ama.servitors;
 
-import ama.containers.BlacklistItem;
-import ama.containers.Category;
-import ama.containers.Scenario;
+import ama.beans.BlacklistItem;
+import ama.beans.Category;
+import ama.beans.Scenario;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

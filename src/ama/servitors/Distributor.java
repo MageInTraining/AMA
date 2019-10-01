@@ -5,9 +5,11 @@
  */
 package ama.servitors;
 
+import static ama.Constants.EXP_PERCENTILE;
+import static ama.Constants.GLOBAL_UPPER_LIMIT;
 import static ama.Constants.NUMBER_OF_YEARS;
-import ama.containers.Category;
-import ama.containers.Scenario;
+import ama.beans.Category;
+import ama.beans.Scenario;
 import com.opencsv.CSVWriter;
 import static java.lang.Math.log;
 import java.util.List;
@@ -22,6 +24,9 @@ public class Distributor {
     public static void distribute(int[] distribution, double threshold, double x){
         int b = (int)x;
         if(x>threshold){
+            if(b > GLOBAL_UPPER_LIMIT){
+                b = GLOBAL_UPPER_LIMIT;
+            }
             distribution[b]++;
         }
     }
@@ -48,18 +53,19 @@ public class Distributor {
         }
     }
         public static void calculateDistribution(CSVWriter writer, Category category, List<String> outputText){
-            category.setDistribution(new int[category.getMaxRange().intValue()]);
+            category.setDistribution(new int[GLOBAL_UPPER_LIMIT+1]);
             category.setBuckets(new double[5]);
             category.setBucketRatios(new double[5]);
             for (Scenario scenario : category.getScenarios()){
                 scenario.setMu(log(scenario.getEstimated()));
-                scenario.setSigma();
+                scenario.setSigma(PercentileSeeker.getSigmaPerPercentile(EXP_PERCENTILE, scenario.getMax(), scenario.getMu()));
                 LogNormalDistribution lnd =
                         new LogNormalDistribution(
                                 scenario.getMu(),scenario.getSigma());
                 for(int i = 0; i < (scenario.getProbability() * NUMBER_OF_YEARS); i++ ){
                     Double d = lnd.sample();
-                    if(d<=scenario.getMax() && scenario.getMax() >= category.getThreshold()){
+//                    if(d<=scenario.getMax() && scenario.getMax() >= category.getThreshold()){
+                    if(true){
                         Distributor.distribute(category.getDistribution(), category.getThreshold(), d);
                         //logging simulation output into a csv file
                         String entry =scenario.getRiskardID()

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ama.containers;
+package ama.beans;
 
 import ama.servitors.PercentileSeeker;
 import static ama.Constants.EXP_PERCENTILE;
@@ -83,9 +83,8 @@ public class Scenario implements java.io.Serializable{
     public void setMu(double m){
         this.mu = m;
     }
-    public void setSigma(){
-        this.sigma =PercentileSeeker.getSigmaPerPercentile(EXP_PERCENTILE,
-                                                max, mu);
+    public void setSigma(double sigma){
+        this.sigma = sigma;
     }
     public void setRiskType(int r){
         this.riskTypeBL2 = r;
