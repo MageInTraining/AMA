@@ -59,12 +59,13 @@ public class AMAController implements Initializable {
                     , execution
                     , notSet);
 
-            Category c = infrastructure;
+            Category c = execution;
             CSVWriter writer =
                     new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\log_"
                             + c.getCategoryName()+".csv"), '\t', '\0', '\0', "\n");
             Distributor.calculateDistribution(writer, c, outputText);
             writer.close();
+            output.setText("Vienna category: " + c.getCategoryName() + "\n");
             for(String s:outputText){
                 output.setText(output.getText() + s + "\n");
             }

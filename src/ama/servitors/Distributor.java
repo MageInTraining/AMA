@@ -62,7 +62,9 @@ public class Distributor {
                     if(d<=scenario.getMax() && scenario.getMax() >= category.getThreshold()){
                         Distributor.distribute(category.getDistribution(), category.getThreshold(), d);
                         //logging simulation output into a csv file
-                        String entry = scenario.getScenarioNumber()
+                        String entry =scenario.getRiskardID()
+                                    + ","
+                                    + scenario.getScenarioNumber()
                                     + ","
                                     + scenario.getRiskType()
                                     + ","

@@ -23,93 +23,93 @@ public class Category {
     private double eventPerYear;
     
     public Category(){
-        scenarios = new ArrayList();
-        threshold = 1;
-        maxRange = 0.0;  
+        this.scenarios = new ArrayList();
+        this.threshold = 1;
+        this.maxRange = 0.0;  
     };
     
     public Category(double t){
-        scenarios = new ArrayList();
-        threshold = t;
-        maxRange = 0.0;  
+        this.scenarios = new ArrayList();
+        this.threshold = t;
+        this.maxRange = 0.0;  
     };
     
     public Category(String name, double t){
-        scenarios = new ArrayList();
-        threshold = t;
-        maxRange = 0.0;
-        categoryName = name;
+        this.scenarios = new ArrayList();
+        this.threshold = t;
+        this.maxRange = 0.0;
+        this.categoryName = name;
     };
     
     public Category(String name, double t, double e){
-        scenarios = new ArrayList();
-        threshold = t;
-        maxRange = 0.0;
-        categoryName = name;
-        eventPerYear = e;
+        this.scenarios = new ArrayList();
+        this.threshold = t;
+        this.maxRange = 0.0;
+        this.categoryName = name;
+        this.eventPerYear = e;
     };
     
     /**Getters**/
     public List<Scenario> getList(){
-        return scenarios;
+        return this.scenarios;
     }
     public double getThreshold(){
-        return threshold;
+        return this.threshold;
     }
     public Double getMaxRange(){
-        return maxRange;
+        return this.maxRange;
     }
     public int getDistribution(int index){
-        return distribution[index];
+        return this.distribution[index];
     }    
     public String getCategoryName(){
-        return categoryName;
+        return this.categoryName;
     }
     public double getBucket(int index){
-        return buckets[index];
+        return this.buckets[index];
     }
     public double[] getBuckets(){
-        return buckets;
+        return this.buckets;
     }
     public double getBucketRatio(int index){
-        return bucketRatios[index];
+        return this.bucketRatios[index];
     }
     public List<Scenario> getScenarios(){
-        return scenarios;
+        return this.scenarios;
     }
     public int[] getDistribution(){
-        return distribution;
+        return this.distribution;
     }
     public double getEventsPerYear(){
-        return eventPerYear;
+        return this.eventPerYear;
     }
     
     /**Setter*/
     public void addToList(Scenario e){
-        scenarios.add(e);
+        this.scenarios.add(e);
     }
     public void setThreshold(double t){
-        threshold = t;
+        this.threshold = t;
     }
     public void setMaxRange(double r){
-        maxRange = r;
+        this.maxRange = r;
     }
     public void addToDistribution(int index){
-        distribution[index]++;
+        this.distribution[index]++;
     }
     public void setCategoryName(String name){
-        categoryName = name;
+        this.categoryName = name;
     }
     public void setBucketRatio(int index, double value){
-        bucketRatios[index]= value;
+        this.bucketRatios[index]= value;
     }
     public void setBucketRatios(double[] bRatios){
-        bucketRatios = bRatios;
+        this.bucketRatios = bRatios;
     }
     public void setDistribution(int[] dist){
-        distribution = dist;
+        this.distribution = dist;
     }
     public void setBuckets(double[] bucks){
-        buckets = bucks;
+        this.buckets = bucks;
     }
 }

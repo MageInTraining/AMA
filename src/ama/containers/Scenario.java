@@ -41,53 +41,53 @@ public class Scenario implements java.io.Serializable{
     
     /**Getters**/
     public String getRiskardID(){
-        return riskCardID;
+        return this.riskCardID;
     }
     public int getScenarioNumber(){
-        return scenarioNumber;
+        return this.scenarioNumber;
     }
     public double getEstimated(){
-        return estimated;
+        return this.estimated;
     }
     public double getProbability(){
-        return probability;
+        return this.probability;
     }
     public double getMax(){
-        return max;
+        return this.max;
     }
     public double getMu(){
-        return mu;
+        return this.mu;
     }
     public double getSigma(){
-        return sigma;
+        return this.sigma;
     }
     public int getRiskType(){
-        return riskTypeBL2;
+        return this.riskTypeBL2;
     }
     /**Setters*/
     public void setRiskCardID(String id){
-        riskCardID = id;
+        this.riskCardID = id;
     }
     public void setScenarioNumber(int n){
-       scenarioNumber = n; 
+       this.scenarioNumber = n; 
     }
     public void setEstimated(double e){
-        estimated = e;
+        this.estimated = e;
     }
     public void setProbability(double p){
-        probability = p;
+        this.probability = p;
     }
     public void setMax(double m){
-        max = m;
+        this.max = m;
     }
     public void setMu(double m){
-        mu = m;
+        this.mu = m;
     }
     public void setSigma(){
-        sigma =PercentileSeeker.getSigmaPerPercentile(EXP_PERCENTILE,
+        this.sigma =PercentileSeeker.getSigmaPerPercentile(EXP_PERCENTILE,
                                                 max, mu);
     }
     public void setRiskType(int r){
-        riskTypeBL2 = r;
+        this.riskTypeBL2 = r;
     }
 }

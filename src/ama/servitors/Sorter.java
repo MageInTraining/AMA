@@ -30,6 +30,9 @@ public class Sorter {
     
     public static List<BlacklistItem> getBlacklist(){
         List<BlacklistItem> blacklist  = new ArrayList();
+        //Migrační karta ze starých dat
+//            blacklist.add(new BlacklistItem("KR201"));
+
             blacklist.add(new BlacklistItem("KR29"));
             blacklist.add(new BlacklistItem("KR35"));
             blacklist.add(new BlacklistItem("KR32"));
@@ -46,6 +49,8 @@ public class Sorter {
             blacklist.add(new BlacklistItem("KR78"));
             blacklist.add(new BlacklistItem("KR81"));
             blacklist.add(new BlacklistItem("KR99"));
+            //GDPR probémek
+//            blacklist.add(new BlacklistItem("KR70", 1911));
             blacklist.add(new BlacklistItem("KR25", 562));
             blacklist.add(new BlacklistItem("KR25", 582));
             blacklist.add(new BlacklistItem("KR25", 596));
