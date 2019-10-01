@@ -45,6 +45,8 @@ public class AMAController implements Initializable {
             List<String> outputText = new ArrayList();
 
             //individual list of scenarios for each of (Erste?) groups
+            //events per year calculated as follows:
+            //  = number_of_events/(year of last events - year_of firs_events)
             Category fraud = new Category("fraud", 0.6, 1.3636);
             Category improperPractices = new Category("improperPractices", 0.16, 0.6);
             Category infrastructure = new Category("infrastructure", 0.1, 0.3756);
