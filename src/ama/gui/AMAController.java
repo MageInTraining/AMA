@@ -41,7 +41,7 @@ public class AMAController implements Initializable {
     
     @FXML
     private void handleBtnGoAction(ActionEvent event) throws IOException{
-            String fileName= "C:\\Users\\cen62777\\Documents\\Rizika_small.csv";
+            String fileName= "C:\\Users\\cen62777\\Documents\\Rizika_new.csv";
             List<String> outputText = new ArrayList();
 
             //individual list of scenarios for each of (Erste?) groups
