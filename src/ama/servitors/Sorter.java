@@ -30,9 +30,10 @@ public class Sorter {
     
     public static List<BlacklistItem> getBlacklist(){
         List<BlacklistItem> blacklist  = new ArrayList();
-        //Migrační karta ze starých dat
+            //Migration risk card from old dataset
 //            blacklist.add(new BlacklistItem("KR201"));
 
+            //SS ČS cards
             blacklist.add(new BlacklistItem("KR29"));
             blacklist.add(new BlacklistItem("KR35"));
             blacklist.add(new BlacklistItem("KR32"));
@@ -48,9 +49,13 @@ public class Sorter {
             blacklist.add(new BlacklistItem("KR69"));
             blacklist.add(new BlacklistItem("KR78"));
             blacklist.add(new BlacklistItem("KR81"));
+            //Tribe Indentity (dissolved)
             blacklist.add(new BlacklistItem("KR99"));
-            //GDPR probémek
+            //Mrs. Vlkova recomendet to omit for now
+            blacklist.add(new BlacklistItem("KR102"));
+            //GDPR fines
 //            blacklist.add(new BlacklistItem("KR70", 1911));
+            //Typycaly credit risk    
             blacklist.add(new BlacklistItem("KR25", 562));
             blacklist.add(new BlacklistItem("KR25", 582));
             blacklist.add(new BlacklistItem("KR25", 596));
@@ -101,43 +106,41 @@ public class Sorter {
                     }
                 }
             }
-            
-            switch(s) {
-                case 1: case 6:
-                    fraud.addToList(scenario);
-                    if(fraud.getMaxRange()<d){
-                        fraud.setMaxRange(d);
-                    }
-                    break;
-                case 2: case 4:
-                    improperPractices.addToList(scenario);
-                    if(improperPractices.getMaxRange()<d){
-                        improperPractices.setMaxRange(d);
-                    }
-                    break;
-                case 3:
-                    if(d>=execution.getThreshold()){
-                       execution.addToList(scenario);
-                       if(execution.getMaxRange()<d){
-                           execution.setMaxRange(d);
-                       }                       
-                    }
-                    break;
-                case 5: case 7:
-                    infrastructure.addToList(scenario);
-                    if(infrastructure.getMaxRange()<d){
-                        infrastructure.setMaxRange(d);
-                    }
-                    break;
-                case 0:
-                    notSet.addToList(scenario);
-                    if(notSet.getMaxRange()<d){
-                        notSet.setMaxRange(d);
-                    }
-                    break;
+        switch(s) {
+            case 1: case 6:
+                fraud.addToList(scenario);
+                if(fraud.getMaxRange()<d){
+                    fraud.setMaxRange(d);
+                }
+                break;
+            case 2: case 4:
+                improperPractices.addToList(scenario);
+                if(improperPractices.getMaxRange()<d){
+                    improperPractices.setMaxRange(d);
+                }
+                break;
+            case 3:
+                if(d>=execution.getThreshold()){
+                   execution.addToList(scenario);
+                   if(execution.getMaxRange()<d){
+                       execution.setMaxRange(d);
+                   }                       
+                }
+                break;
+            case 5: case 7:
+                infrastructure.addToList(scenario);
+                if(infrastructure.getMaxRange()<d){
+                    infrastructure.setMaxRange(d);
+                }
+                break;
+            case 0:
+                notSet.addToList(scenario);
+                if(notSet.getMaxRange()<d){
+                    notSet.setMaxRange(d);
+                }
+                break;
             }
         }
         scenarios.clear();
     }
-    
 }

@@ -41,7 +41,7 @@ public class AMAController implements Initializable {
     
     @FXML
     private void handleBtnGoAction(ActionEvent event) throws IOException{
-        String fileName= "C:\\Users\\cen62777\\Documents\\Rizika_small.csv";
+        String fileName= "C:\\Users\\cen62777\\Documents\\Rizika_new.csv";
         List<String> outputText = new ArrayList();
 
         //individual list of scenarios for each of (Erste?) groups
@@ -61,7 +61,7 @@ public class AMAController implements Initializable {
                 , execution
                 , notSet);
 
-        Category c = fraud;
+        Category c = infrastructure;
         CSVWriter writer =
                 new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\log_"
                         + c.getCategoryName()+".csv"), '\t', '\0', '\0', "\n");
@@ -72,5 +72,4 @@ public class AMAController implements Initializable {
             output.setText(output.getText() + s + "\n");
         }
     }
-    
 }

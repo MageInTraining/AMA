@@ -48,61 +48,59 @@ public class Distributor {
                     b=4;
                     break;
             }
-//            System.out.println("Distribution slot " + i + " : " + distribution[i]);
             buckets[b]=buckets[b]+distribution[i];
         }
     }
-        public static void calculateDistribution(CSVWriter writer, Category category, List<String> outputText){
-            category.setDistribution(new int[GLOBAL_UPPER_LIMIT+1]);
-            category.setBuckets(new double[5]);
-            category.setBucketRatios(new double[5]);
-            for (Scenario scenario : category.getScenarios()){
-                scenario.setMu(log(scenario.getEstimated()));
-                scenario.setSigma(PercentileSeeker.getSigmaPerPercentile(EXP_PERCENTILE, scenario.getMax(), scenario.getMu()));
-                LogNormalDistribution lnd =
-                        new LogNormalDistribution(
-                                scenario.getMu(),scenario.getSigma());
-                for(int i = 0; i < (scenario.getProbability() * NUMBER_OF_YEARS); i++ ){
-                    Double d = lnd.sample();
-//                    if(d<=scenario.getMax() && scenario.getMax() >= category.getThreshold()){
-                    if(true){
-                        Distributor.distribute(category.getDistribution(), category.getThreshold(), d);
-                        //logging simulation output into a csv file
-                        String entry =scenario.getRiskardID()
-                                    + ","
-                                    + scenario.getScenarioNumber()
-                                    + ","
-                                    + scenario.getRiskType()
-                                    + ","
-                                    + scenario.getEstimated()
-                                    + ","
-                                    + scenario.getProbability()
-                                    + ","
-                                    + scenario.getMax()
-                                    + ","
-                                    + d
-                                    ;                                   
-                        String[] entries = entry.split(",");
-                        writer.writeNext(entries);
-                    }
+    public static void calculateDistribution(CSVWriter writer, Category category, List<String> outputText){
+        category.setDistribution(new int[GLOBAL_UPPER_LIMIT+1]);
+        category.setBuckets(new double[5]);
+        category.setBucketRatios(new double[5]);
+        for (Scenario scenario : category.getScenarios()){
+            scenario.setMu(log(scenario.getEstimated()));
+            scenario.setSigma(PercentileSeeker.getSigmaPerPercentile(EXP_PERCENTILE, scenario.getMax(), scenario.getMu()));
+            LogNormalDistribution lnd =
+                    new LogNormalDistribution(
+                            scenario.getMu(),scenario.getSigma());
+            for(int i = 0; i < (scenario.getProbability() * NUMBER_OF_YEARS); i++ ){
+                Double d = lnd.sample();
+                if(true){
+                    Distributor.distribute(category.getDistribution(), category.getThreshold(), d);
+                    //logging simulation output into a csv file
+                    String entry =scenario.getRiskardID()
+                                + ","
+                                + scenario.getScenarioNumber()
+                                + ","
+                                + scenario.getRiskType()
+                                + ","
+                                + scenario.getEstimated()
+                                + ","
+                                + scenario.getProbability()
+                                + ","
+                                + scenario.getMax()
+                                + ","
+                                + d
+                                ;                                   
+                    String[] entries = entry.split(",");
+                    writer.writeNext(entries);
                 }
             }
-            Distributor.putInBucket(category.getDistribution(), category.getBuckets()
-                    , category.getMaxRange().intValue());
-            double sumOfBuckets = 0.0;
-            for(Double bucket:category.getBuckets()){
-                sumOfBuckets = sumOfBuckets + bucket; 
-            }
-            for(int i=0;i<5;i++){
-                category.setBucketRatio(i, (category.getBucket(i)/sumOfBuckets));
-                outputText.add("Buckets ratio of buckets number " + (i+1) + " : "
-                        + category.getBucketRatio(i));
-            }
-            double x = (100/category.getBucketRatio(0))*category.getEventsPerYear();
-            for(int i=0; i<5; i++){
-                outputText.add("For category " + category.getCategoryName() +
-                        ", events in bucket " + (i+1)+ " happen once every " + 
-                            1/((category.getBucketRatio(i)*x)/100) + " years");
-            }
         }
+        Distributor.putInBucket(category.getDistribution(), category.getBuckets()
+                , category.getMaxRange().intValue());
+        double sumOfBuckets = 0.0;
+        for(Double bucket:category.getBuckets()){
+            sumOfBuckets = sumOfBuckets + bucket; 
+        }
+        for(int i=0;i<5;i++){
+            category.setBucketRatio(i, (category.getBucket(i)/sumOfBuckets));
+            outputText.add("Buckets ratio of buckets number " + (i+1) + " : "
+                    + category.getBucketRatio(i));
+        }
+        double x = (100/category.getBucketRatio(0))*category.getEventsPerYear();
+        for(int i=0; i<5; i++){
+            outputText.add("For category " + category.getCategoryName() +
+                    ", events in bucket " + (i+1)+ " happen once every " + 
+                        1/((category.getBucketRatio(i)*x)/100) + " years");
+        }
+    }
 }

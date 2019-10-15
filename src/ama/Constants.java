@@ -17,7 +17,7 @@ public interface Constants {
     //percentile, for which we are looking
     public static final double EXP_PERCENTILE = 0.99;
     //number of years, for which we run simulation
-    public static final int NUMBER_OF_YEARS = 1000;
+    public static final int NUMBER_OF_YEARS = 10000000;
     //upper limit of buckets
     public static final int GLOBAL_UPPER_LIMIT = 50;
 }
