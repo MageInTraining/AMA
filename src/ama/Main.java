@@ -29,10 +29,12 @@ public class Main extends Application{
     }
 
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException, IOException{
+    public void start(Stage primaryStage) throws FileNotFoundException
+            , IOException{
         
         try{
-            AnchorPane page = (AnchorPane) FXMLLoader.load(Main.class.getResource("gui/AMA.fxml"));
+            AnchorPane page = (AnchorPane) FXMLLoader.load(
+                    Main.class.getResource("gui/AMA.fxml"));
             Scene scene = new Scene(page);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Advanced Measuring Aproach");

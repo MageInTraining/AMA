@@ -15,7 +15,8 @@ import static java.lang.Math.log;
 public class PercentileSeeker {
     // get sigma parametr of lognormal distribution with give mu parametr amd
     // given variable x being in given percentile of this distribution
-    public static double getSigmaPerPercentile(double expectPercentile, double x, double mu){
+    public static double getSigmaPerPercentile(double expectPercentile
+            , double x, double mu){
         double p = 1;
         double s = 0;
         while (p > expectPercentile){

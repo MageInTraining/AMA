@@ -21,7 +21,8 @@ import org.apache.commons.math3.distribution.LogNormalDistribution;
  */
 public class Distributor {
 
-    public static void distribute(int[] distribution, double threshold, double x){
+    public static void distribute(int[] distribution
+            , double threshold, double x){
         int b = (int)x;
         if(x>threshold){
             if(b > GLOBAL_UPPER_LIMIT){
@@ -31,7 +32,8 @@ public class Distributor {
         }
     }
     
-    public static void putInBucket(int[] distribution, double [] buckets, int size){
+    public static void putInBucket(int[] distribution
+            , double [] buckets, int size){
         int b=0;
         for(int i = 0; i < size; i++){ 
             switch(i){
@@ -51,20 +53,24 @@ public class Distributor {
             buckets[b]=buckets[b]+distribution[i];
         }
     }
-    public static void calculateDistribution(CSVWriter writer, Category category, List<String> outputText){
+    public static void calculateDistribution(CSVWriter writer, Category category
+            , List<String> outputText){
         category.setDistribution(new int[GLOBAL_UPPER_LIMIT+1]);
         category.setBuckets(new double[5]);
         category.setBucketRatios(new double[5]);
         for (Scenario scenario : category.getScenarios()){
             scenario.setMu(log(scenario.getEstimated()));
-            scenario.setSigma(PercentileSeeker.getSigmaPerPercentile(EXP_PERCENTILE, scenario.getMax(), scenario.getMu()));
+            scenario.setSigma(PercentileSeeker.getSigmaPerPercentile(
+                    EXP_PERCENTILE, scenario.getMax(), scenario.getMu()));
             LogNormalDistribution lnd =
                     new LogNormalDistribution(
                             scenario.getMu(),scenario.getSigma());
-            for(int i = 0; i < (scenario.getProbability() * NUMBER_OF_YEARS); i++ ){
+            for(int i = 0; i < (
+                    scenario.getProbability() * NUMBER_OF_YEARS); i++ ){
                 Double d = lnd.sample();
                 if(true){
-                    Distributor.distribute(category.getDistribution(), category.getThreshold(), d);
+                    Distributor.distribute(category.getDistribution()
+                                                , category.getThreshold(), d);
                     //logging simulation output into a csv file
                     String entry =scenario.getRiskardID()
                                 + ","
@@ -85,7 +91,8 @@ public class Distributor {
                 }
             }
         }
-        Distributor.putInBucket(category.getDistribution(), category.getBuckets()
+        Distributor.putInBucket(category.getDistribution()
+                , category.getBuckets()
                 , category.getMaxRange().intValue());
         double sumOfBuckets = 0.0;
         for(Double bucket:category.getBuckets()){

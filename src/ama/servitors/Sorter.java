@@ -86,11 +86,14 @@ public class Sorter {
     public static void sortScenarios(
             List<BlacklistItem> blacklist
             , List<Scenario> scenarios
-            , Category fraud
-            , Category improperPractices
-            , Category infrastructure
-            , Category execution
-            , Category notSet
+            , Category  internalFraud 
+            , Category  employmentPractices 
+            , Category  execution
+            , Category  clientPractices
+            , Category  businessDisruption
+            , Category  externalFraud
+            , Category  damageToAssest
+            , Category  notSet
             ){
         for (Scenario scenario : scenarios){
             int s = scenario.getRiskType();
@@ -107,16 +110,16 @@ public class Sorter {
                 }
             }
         switch(s) {
-            case 1: case 6:
-                fraud.addToList(scenario);
-                if(fraud.getMaxRange()<d){
-                    fraud.setMaxRange(d);
+            case 1:
+                internalFraud .addToList(scenario);
+                if(internalFraud .getMaxRange()<d){
+                    internalFraud .setMaxRange(d);
                 }
                 break;
-            case 2: case 4:
-                improperPractices.addToList(scenario);
-                if(improperPractices.getMaxRange()<d){
-                    improperPractices.setMaxRange(d);
+            case 2:
+                employmentPractices .addToList(scenario);
+                if(employmentPractices .getMaxRange()<d){
+                    employmentPractices .setMaxRange(d);
                 }
                 break;
             case 3:
@@ -127,10 +130,28 @@ public class Sorter {
                    }                       
                 }
                 break;
-            case 5: case 7:
-                infrastructure.addToList(scenario);
-                if(infrastructure.getMaxRange()<d){
-                    infrastructure.setMaxRange(d);
+            case 4:
+                clientPractices.addToList(scenario);
+                if(clientPractices.getMaxRange()<d){
+                    clientPractices.setMaxRange(d);
+                }
+                break;
+            case 5:
+                businessDisruption.addToList(scenario);
+                if(businessDisruption.getMaxRange()<d){
+                    businessDisruption.setMaxRange(d);
+                }
+                break;
+            case 6:
+                externalFraud.addToList(scenario);
+                if(externalFraud.getMaxRange()<d){
+                    externalFraud.setMaxRange(d);
+                }
+                break;
+            case 7:
+                damageToAssest.addToList(scenario);
+                if(damageToAssest.getMaxRange()<d){
+                    damageToAssest.setMaxRange(d);
                 }
                 break;
             case 0:

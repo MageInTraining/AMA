@@ -17,7 +17,15 @@ public interface Constants {
     //percentile, for which we are looking
     public static final double EXP_PERCENTILE = 0.99;
     //number of years, for which we run simulation
-    public static final int NUMBER_OF_YEARS = 10000000;
+    //15_10_2018 values for 5% tolerance:
+    //internalFraud:        10M
+    //employmentPractices:  100M
+    //execution:            1M
+    //clientPractices:      1M
+    //businessDisruption:   10M
+    //externalFraud:        10M
+    //damageToAssets:       100M
+    public static final int NUMBER_OF_YEARS = 100000000;
     //upper limit of buckets
     public static final int GLOBAL_UPPER_LIMIT = 50;
 }

@@ -41,33 +41,48 @@ public class AMAController implements Initializable {
     
     @FXML
     private void handleBtnGoAction(ActionEvent event) throws IOException{
-        String fileName= "C:\\Users\\cen62777\\Documents\\Rizika_new.csv";
+        String fileName= "C:\\Users\\cen62777\\Documents\\Scenarios_EMUS.csv";
         List<String> outputText = new ArrayList();
 
         //individual list of scenarios for each of (Erste?) groups
         //events per year calculated as follows:
         //  = number_of_events/(year of last events - year_of firs_events)
-        Category fraud = new Category("fraud", 0.6, 1.0714);
-        Category improperPractices = new Category("improperPractices", 0.16, 0.4286);
-        Category infrastructure = new Category("infrastructure", 0.1, 0.2143);
-        Category execution = new Category("execution", 0.5, 1.6429);
-        Category notSet = new Category();
+        Category internalFraud
+                            = new Category("internalFraud"      , 0.6,  1.0643);
+        Category employmentPractices
+                            = new Category("employmentPractices", 0.16, 0);
+        Category execution          
+                            = new Category("execution"          , 0.5,  1.2002);
+        Category clientPractices    
+                            = new Category("clientPractices"    , 0.16, 1.0231);
+        Category businessDisruption
+                            = new Category("businessDisruption" , 0.1,  0.029);
+        Category externalFraud 
+                            = new Category("externalFraud"      , 0.6,  2.4388);
+        Category damageToAssest
+                            = new Category("damageToAssest"     , 0.1,  0.6955);
+        Category notSet
+                            = new Category();
 
         Sorter.sortScenarios(Sorter.getBlacklist()
                 , Sorter.extractScenarios(fileName)
-                , fraud
-                , improperPractices
-                , infrastructure
+                , internalFraud 
+                , employmentPractices
                 , execution
+                , clientPractices
+                , businessDisruption
+                , externalFraud
+                , damageToAssest
                 , notSet);
 
-        Category c = infrastructure;
+        Category c = damageToAssest;
         CSVWriter writer =
-                new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\log_"
-                        + c.getCategoryName()+".csv"), '\t', '\0', '\0', "\n");
+                new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\"
+                        + "log_"+ c.getCategoryName()+".csv"), '\t', '\0', '\0'
+                        , "\n");
         Distributor.calculateDistribution(writer, c, outputText);
         writer.close();
-        output.setText("Vienna category: " + c.getCategoryName() + "\n");
+        output.setText("Basel II category: " + c.getCategoryName() + "\n");
         for(String s:outputText){
             output.setText(output.getText() + s + "\n");
         }
