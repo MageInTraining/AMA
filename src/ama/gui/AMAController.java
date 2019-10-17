@@ -13,12 +13,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 
 /**
@@ -27,6 +32,15 @@ import javafx.scene.control.TextArea;
  * @author cen62777
  */
 public class AMAController implements Initializable {
+    
+    ObservableList<String> categoryNamesList = FXCollections.observableArrayList(
+            "internalFraud"
+            , "employmentPractices"
+            , "execution"
+            , "clientPractices"
+            , "businessDisruption"
+            , "externalFraud"
+            , "damageToAssest");
 
     @FXML //  fx:id="output"
     private TextArea output;
@@ -34,8 +48,13 @@ public class AMAController implements Initializable {
     @FXML // fx:id="bntGO"
     private Button btnGo;
     
+    @FXML //fx:id="categoryChooser"
+    private ChoiceBox categoryChooser;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        categoryChooser.setItems(categoryNamesList);
+        categoryChooser.setValue("internalFraud");
         output.setText("Hello World!\n");
     }
     
@@ -63,7 +82,23 @@ public class AMAController implements Initializable {
                             = new Category("damageToAssest"     , 0.1,  0.6955);
         Category notSet
                             = new Category();
-
+        
+        HashMap<String, Category> CategoryMap = new HashMap();
+            CategoryMap.put(internalFraud .getCategoryName()
+                    , internalFraud );
+            CategoryMap.put(employmentPractices.getCategoryName()
+                    , employmentPractices);
+            CategoryMap.put(execution.getCategoryName()
+                    , execution);
+            CategoryMap.put(clientPractices.getCategoryName()
+                    , clientPractices);
+            CategoryMap.put(businessDisruption.getCategoryName()
+                    , businessDisruption);
+            CategoryMap.put(externalFraud.getCategoryName()
+                    , externalFraud);
+            CategoryMap.put(damageToAssest.getCategoryName()
+                    , damageToAssest);
+            
         Sorter.sortScenarios(Sorter.getBlacklist()
                 , Sorter.extractScenarios(fileName)
                 , internalFraud 
@@ -75,7 +110,7 @@ public class AMAController implements Initializable {
                 , damageToAssest
                 , notSet);
 
-        Category c = damageToAssest;
+        Category c = CategoryMap.get(categoryChooser.getValue());
         CSVWriter writer =
                 new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\"
                         + "log_"+ c.getCategoryName()+".csv"), '\t', '\0', '\0'

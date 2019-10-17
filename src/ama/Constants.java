@@ -25,7 +25,7 @@ public interface Constants {
     //businessDisruption:   10M
     //externalFraud:        10M
     //damageToAssets:       100M
-    public static final int NUMBER_OF_YEARS = 100000000;
+    public static final int NUMBER_OF_YEARS = 1000;
     //upper limit of buckets
     public static final int GLOBAL_UPPER_LIMIT = 50;
 }
