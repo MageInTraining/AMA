@@ -105,8 +105,7 @@ public class Distributor {
         }
         double x = (100/category.getBucketRatio(0))*category.getEventsPerYear();
         for(int i=0; i<5; i++){
-            outputText.add("For category " + category.getCategoryName() +
-                    ", events in bucket " + (i+1)+ " happen once every " + 
+            outputText.add("Events in bucket " + (i+1)+ " happen once every " + 
                         1/((category.getBucketRatio(i)*x)/100) + " years");
         }
     }

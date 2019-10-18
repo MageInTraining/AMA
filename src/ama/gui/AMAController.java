@@ -9,6 +9,7 @@ import ama.beans.Category;
 import ama.servitors.Distributor;
 import ama.servitors.Sorter;
 import com.opencsv.CSVWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -24,6 +25,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 /**
  * FXML Controller class
@@ -32,7 +36,8 @@ import javafx.scene.control.TextArea;
  */
 public class AMAController implements Initializable {
     
-    ObservableList<String> categoryNamesList = FXCollections.observableArrayList(
+    private ObservableList<String> categoryNamesList = FXCollections
+            .observableArrayList(
             "internalFraud"
             , "employmentPractices"
             , "execution"
@@ -40,26 +45,40 @@ public class AMAController implements Initializable {
             , "businessDisruption"
             , "externalFraud"
             , "damageToAssest");
+//    private String fileName;
 
-    @FXML //  fx:id="output"
-    private TextArea output;
+    @FXML //  fx:id="outputTextArea"
+    private TextArea outputTextArea;
     
-    @FXML // fx:id="bntGO"
-    private Button btnGo;
+    @FXML // fx:id="btnCalculate"
+    private Button btnCalculate;
     
-    @FXML //fx:id="categoryChooser"
-    private ChoiceBox categoryChooser;
+    @FXML //fx:id="categoryChoiceField"
+    private ChoiceBox categoryChoiceField;
+    
+    @FXML //fx:id="chosenFileTextField"
+    private TextField chosenFileTextField;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        categoryChooser.setItems(categoryNamesList);
-        categoryChooser.setValue("internalFraud");
-        output.setText("Hello World!\n");
+        categoryChoiceField.setItems(categoryNamesList);
+        categoryChoiceField.setValue("internalFraud");
     }
     
     @FXML
-    private void handleBtnGoAction(ActionEvent event) throws IOException{
-        String fileName= "C:\\Users\\cen62777\\Documents\\Scenarios_EMUS.csv";
+    void singleFileChooser(ActionEvent event) {
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().add(new ExtensionFilter("CSV Files", "*.csv"));
+        File f = fc.showOpenDialog(null);
+        if (f !=null){
+            chosenFileTextField.setText(f.getAbsolutePath());
+        }
+    }
+    
+    @FXML
+    private void handleBtnGCalculateAction(ActionEvent event) throws IOException{
+//        String fileName= "C:\\Users\\cen62777\\Documents\\Scenarios_EMUS.csv";
+        String fileName= chosenFileTextField.getText();
         List<String> outputText = new ArrayList();
 
         //individual list of scenarios for each of (Erste?) groups
@@ -109,16 +128,16 @@ public class AMAController implements Initializable {
                 , damageToAssest
                 , notSet);
 
-        Category c = CategoryMap.get(categoryChooser.getValue());
+        Category c = CategoryMap.get(categoryChoiceField.getValue());
         CSVWriter writer =
                 new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\"
                         + "log_"+ c.getCategoryName()+".csv"), '\t', '\0', '\0'
                         , "\n");
         Distributor.calculateDistribution(writer, c, outputText);
         writer.close();
-        output.setText("Basel II category: " + c.getCategoryName() + "\n");
+        outputTextArea.setText("Basel II category: " + c.getCategoryName() + "\n");
         for(String s:outputText){
-            output.setText(output.getText() + s + "\n");
+            outputTextArea.setText(outputTextArea.getText() + s + "\n");
         }
     }
 }
