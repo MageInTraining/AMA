@@ -20,7 +20,8 @@ import java.util.List;
  */
 public class Sorter {
     
-    public static List<Scenario> extractScenarios(String fileName) throws FileNotFoundException{
+    public static List<Scenario> extractScenarios(String fileName)
+            throws FileNotFoundException{
         List<Scenario> scenarios =
                     new CsvToBeanBuilder(new FileReader(fileName))
                         .withType(Scenario.class).withSeparator('\t')
