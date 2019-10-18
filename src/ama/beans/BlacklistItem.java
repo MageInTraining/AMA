@@ -5,27 +5,32 @@
  */
 package ama.beans;
 
+import com.opencsv.bean.CsvBindByPosition;
+
 /**
  *
  * @author cen62777
  */
-public class BlacklistItem {
+public class BlacklistItem implements java.io.Serializable{
+    @CsvBindByPosition(position = 0)
     private String riskCardID;
+    @CsvBindByPosition(position = 1)
     private int scenarioNumber;
+    
+    public BlacklistItem(){
+    }
     
     public BlacklistItem(String riskCardID){
         this.riskCardID = riskCardID;
         this.scenarioNumber = 0;
     }
-//    public BlacklistItem(int scenarioNumber){
-//        this.scenarioNumber = scenarioNumber;
-//    }
+
     public BlacklistItem(String riskCardID, int scenarioNumber){
         this.riskCardID = riskCardID;
         this.scenarioNumber = scenarioNumber;
     }
+    
     /**Getters**/
-    /** @return s**/
     public String getRiskCardID(){
         return this.riskCardID;
     }

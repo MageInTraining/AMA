@@ -81,7 +81,9 @@ public class AMAController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //Implicit scenario csv path, for demonstration purpouses only
         chosenScenarioTextField
-                .setText("C:\\Users\\cen62777\\Documents\\Scenarios_EMUS.csv");
+                .setText("C:\\Users\\cen62777\\Documents\\Scenarios_CSAS.csv");
+        chosenBlacklistTextField
+                .setText("C:\\Users\\cen62777\\Documents\\Blacklist_CSAS.csv");
         categoryChoiceField.setItems(categoryNamesList);
         categoryChoiceField.setValue("internalFraud");
         numberOfYears = 1000;
@@ -127,7 +129,8 @@ public class AMAController implements Initializable {
     
     @FXML
     private void handleBtnGCalculateAction(ActionEvent event) throws IOException{
-        String fileName = chosenScenarioTextField.getText();
+        String scenariosFilePath = chosenScenarioTextField.getText();
+        String blacklistFilePath = chosenBlacklistTextField.getText();
         numberOfYears = Integer.valueOf(numberOfYearsTextField.getText());
         List<String> outputText = new ArrayList();
         
@@ -168,8 +171,9 @@ public class AMAController implements Initializable {
             CategoryMap.put(damageToAssest.getCategoryName()
                     , damageToAssest);
             
-        Sorter.sortScenarios(Sorter.getBlacklist()
-                , Sorter.extractScenarios(fileName)
+        Sorter.sortScenarios(
+                Sorter.extractBlacklist(blacklistFilePath)
+                , Sorter.extractScenarios(scenariosFilePath)
                 , internalFraud 
                 , employmentPractices
                 , execution

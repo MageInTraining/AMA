@@ -38,7 +38,7 @@ public class Main extends Application{
                     Main.class.getResource("gui/AMA.fxml"));
             Scene scene = new Scene(page);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Advanced Measuring Aproach");
+            primaryStage.setTitle("Advanced Measurement Aproach Simulation");
             primaryStage.show();
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

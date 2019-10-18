@@ -5,8 +5,6 @@
  */
 package ama.beans;
 
-import ama.servitors.PercentileSeeker;
-import static ama.Constants.EXP_PERCENTILE;
 import com.opencsv.bean.CsvBindByPosition;
 
 /**

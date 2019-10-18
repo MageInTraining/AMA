@@ -29,57 +29,62 @@ public class Sorter {
         return scenarios;
     }
     
-    public static List<BlacklistItem> getBlacklist(){
-        List<BlacklistItem> blacklist  = new ArrayList();
-            //Migration risk card from old dataset
-//            blacklist.add(new BlacklistItem("KR201"));
-
-            //SS ČS cards
-            blacklist.add(new BlacklistItem("KR29"));
-            blacklist.add(new BlacklistItem("KR35"));
-            blacklist.add(new BlacklistItem("KR32"));
-            blacklist.add(new BlacklistItem("KR34"));
-            blacklist.add(new BlacklistItem("KR35"));
-            blacklist.add(new BlacklistItem("KR36"));
-            blacklist.add(new BlacklistItem("KR37"));
-            blacklist.add(new BlacklistItem("KR38"));
-            blacklist.add(new BlacklistItem("KR40"));
-            blacklist.add(new BlacklistItem("KR41"));
-            blacklist.add(new BlacklistItem("KR42"));
-            blacklist.add(new BlacklistItem("KR57"));
-            blacklist.add(new BlacklistItem("KR69"));
-            blacklist.add(new BlacklistItem("KR78"));
-            blacklist.add(new BlacklistItem("KR81"));
-            //Tribe Indentity (dissolved)
-            blacklist.add(new BlacklistItem("KR99"));
-            //Mrs. Vlkova recomendet to omit for now
-            blacklist.add(new BlacklistItem("KR102"));
-            //GDPR fines
-//            blacklist.add(new BlacklistItem("KR70", 1911));
-            //Typycaly credit risk    
-            blacklist.add(new BlacklistItem("KR25", 562));
-            blacklist.add(new BlacklistItem("KR25", 582));
-            blacklist.add(new BlacklistItem("KR25", 596));
-            blacklist.add(new BlacklistItem("KR25", 609));
-            blacklist.add(new BlacklistItem("KR25", 611));
-            blacklist.add(new BlacklistItem("KR25", 628));
-            blacklist.add(new BlacklistItem("KR48", 1357));
-            blacklist.add(new BlacklistItem("KR48", 1358));
-            blacklist.add(new BlacklistItem("KR49", 1404));
-            blacklist.add(new BlacklistItem("KR49", 1416));
-            blacklist.add(new BlacklistItem("KR50", 1424));
-            blacklist.add(new BlacklistItem("KR50", 1429));
-            blacklist.add(new BlacklistItem("KR50", 1432));
-            blacklist.add(new BlacklistItem("KR50", 1435));
-            blacklist.add(new BlacklistItem("KR59", 1651));
-            blacklist.add(new BlacklistItem("KR59", 1652));
-            blacklist.add(new BlacklistItem("KR59", 1658));
-            blacklist.add(new BlacklistItem("KR59", 1662));
-            blacklist.add(new BlacklistItem("KR21", 468));
-            blacklist.add(new BlacklistItem("KR21", 469));
-            blacklist.add(new BlacklistItem("KR21", 474));
-            blacklist.add(new BlacklistItem("KR21", 476));
-            blacklist.add(new BlacklistItem("KR20", 424));
+    public static List<BlacklistItem> extractBlacklist(String fileName)
+            throws FileNotFoundException{
+        List<BlacklistItem> blacklist =
+                    new CsvToBeanBuilder(new FileReader(fileName))
+                        .withType(BlacklistItem.class).withSeparator(',')
+                            .build().parse();
+//        List<BlacklistItem> blacklist  = new ArrayList();
+//            //Migration risk card from old dataset
+////            blacklist.add(new BlacklistItem("KR201"));
+//
+//            //SS ČS cards
+//            blacklist.add(new BlacklistItem("KR29"));
+//            blacklist.add(new BlacklistItem("KR35"));
+//            blacklist.add(new BlacklistItem("KR32"));
+//            blacklist.add(new BlacklistItem("KR34"));
+//            blacklist.add(new BlacklistItem("KR35"));
+//            blacklist.add(new BlacklistItem("KR36"));
+//            blacklist.add(new BlacklistItem("KR37"));
+//            blacklist.add(new BlacklistItem("KR38"));
+//            blacklist.add(new BlacklistItem("KR40"));
+//            blacklist.add(new BlacklistItem("KR41"));
+//            blacklist.add(new BlacklistItem("KR42"));
+//            blacklist.add(new BlacklistItem("KR57"));
+//            blacklist.add(new BlacklistItem("KR69"));
+//            blacklist.add(new BlacklistItem("KR78"));
+//            blacklist.add(new BlacklistItem("KR81"));
+//            //Tribe Indentity (dissolved)
+//            blacklist.add(new BlacklistItem("KR99"));
+//            //Mrs. Vlkova recomendet to omit for now
+//            blacklist.add(new BlacklistItem("KR102"));
+//            //GDPR fines
+////            blacklist.add(new BlacklistItem("KR70", 1911));
+//            //Typycaly credit risk    
+//            blacklist.add(new BlacklistItem("KR25", 562));
+//            blacklist.add(new BlacklistItem("KR25", 582));
+//            blacklist.add(new BlacklistItem("KR25", 596));
+//            blacklist.add(new BlacklistItem("KR25", 609));
+//            blacklist.add(new BlacklistItem("KR25", 611));
+//            blacklist.add(new BlacklistItem("KR25", 628));
+//            blacklist.add(new BlacklistItem("KR48", 1357));
+//            blacklist.add(new BlacklistItem("KR48", 1358));
+//            blacklist.add(new BlacklistItem("KR49", 1404));
+//            blacklist.add(new BlacklistItem("KR49", 1416));
+//            blacklist.add(new BlacklistItem("KR50", 1424));
+//            blacklist.add(new BlacklistItem("KR50", 1429));
+//            blacklist.add(new BlacklistItem("KR50", 1432));
+//            blacklist.add(new BlacklistItem("KR50", 1435));
+//            blacklist.add(new BlacklistItem("KR59", 1651));
+//            blacklist.add(new BlacklistItem("KR59", 1652));
+//            blacklist.add(new BlacklistItem("KR59", 1658));
+//            blacklist.add(new BlacklistItem("KR59", 1662));
+//            blacklist.add(new BlacklistItem("KR21", 468));
+//            blacklist.add(new BlacklistItem("KR21", 469));
+//            blacklist.add(new BlacklistItem("KR21", 474));
+//            blacklist.add(new BlacklistItem("KR21", 476));
+//            blacklist.add(new BlacklistItem("KR20", 424));
             
         return blacklist;
     }
@@ -164,5 +169,6 @@ public class Sorter {
             }
         }
         scenarios.clear();
+        blacklist.clear();
     }
 }
