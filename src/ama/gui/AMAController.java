@@ -17,12 +17,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -45,41 +48,89 @@ public class AMAController implements Initializable {
             , "businessDisruption"
             , "externalFraud"
             , "damageToAssest");
-//    private String fileName;
+    
+    //number of years, for which we run simulation
+    //15_10_2018 values for 5% tolerance:
+    //internalFraud:        10M
+    //employmentPractices:  100M
+    //execution:            1M
+    //clientPractices:      1M
+    //businessDisruption:   10M
+    //externalFraud:        10M
+    //damageToAssets:       100M
+    public static int numberOfYears;
 
     @FXML //  fx:id="outputTextArea"
     private TextArea outputTextArea;
-    
     @FXML // fx:id="btnCalculate"
     private Button btnCalculate;
-    
     @FXML //fx:id="categoryChoiceField"
     private ChoiceBox categoryChoiceField;
-    
-    @FXML //fx:id="chosenFileTextField"
-    private TextField chosenFileTextField;
+    @FXML //fx:id="chosenScenarioTextField"
+    private TextField chosenScenarioTextField;
+    @FXML //fx:id="chosenEMUSTextField"
+    private TextField chosenEMUSTextField;
+    @FXML //fx:id="chosenBlacklistTextField"
+    private TextField chosenBlacklistTextField;
+    @FXML //fx:id="numberOfYearsTextField"
+    private TextField numberOfYearsTextField;
+    @FXML //fx:id="checkBoxLogSimulation"
+    private CheckBox checkBoxLogSimulation; 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //Implicit scenario csv path, for demonstration purpouses only
+        chosenScenarioTextField
+                .setText("C:\\Users\\cen62777\\Documents\\Scenarios_EMUS.csv");
         categoryChoiceField.setItems(categoryNamesList);
         categoryChoiceField.setValue("internalFraud");
+        numberOfYears = 1000;
+        numberOfYearsTextField.setText("1000");
+        numberOfYearsTextField.textProperty()
+                .addListener(new ChangeListener<String>() {
+                    @Override
+                    public void changed(
+                            ObservableValue<? extends String> observable
+                            , String oldValue, 
+                        String newValue) {
+                        if (!newValue.matches("\\d*")) {
+                            numberOfYearsTextField
+                                    .setText(newValue.replaceAll("[^\\d]", ""));
+                        }
+                    }
+                });
     }
     
     @FXML
-    void singleFileChooser(ActionEvent event) {
+    void handleBtnScenarioFileChooser(ActionEvent event) {
+            chosenScenarioTextField.setText(chooseCSVFile());
+    }
+    @FXML
+    void handleBtnEMUSFileChooser(ActionEvent event) {
+            chosenEMUSTextField.setText(chooseCSVFile());
+    }
+    @FXML
+    void handleBtnBlacklistFileChooser(ActionEvent event) {
+            chosenBlacklistTextField.setText(chooseCSVFile());
+    }
+    
+    private String chooseCSVFile(){
+        String r = null;
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().add(new ExtensionFilter("CSV Files", "*.csv"));
         File f = fc.showOpenDialog(null);
         if (f !=null){
-            chosenFileTextField.setText(f.getAbsolutePath());
+            r = f.getAbsolutePath();
         }
+        return r;
     }
     
     @FXML
     private void handleBtnGCalculateAction(ActionEvent event) throws IOException{
-//        String fileName= "C:\\Users\\cen62777\\Documents\\Scenarios_EMUS.csv";
-        String fileName= chosenFileTextField.getText();
+        String fileName = chosenScenarioTextField.getText();
+        numberOfYears = Integer.valueOf(numberOfYearsTextField.getText());
         List<String> outputText = new ArrayList();
+        
 
         //individual list of scenarios for each of (Erste?) groups
         //events per year calculated as follows:
@@ -129,12 +180,20 @@ public class AMAController implements Initializable {
                 , notSet);
 
         Category c = CategoryMap.get(categoryChoiceField.getValue());
-        CSVWriter writer =
-                new CSVWriter(new FileWriter("C:\\Users\\cen62777\\Documents\\"
-                        + "log_"+ c.getCategoryName()+".csv"), '\t', '\0', '\0'
-                        , "\n");
-        Distributor.calculateDistribution(writer, c, outputText);
-        writer.close();
+        CSVWriter writer = null;
+        //TODO> make this more elegant
+        if(checkBoxLogSimulation.isSelected()){
+                writer = 
+                    new CSVWriter(new FileWriter(
+                            "C:\\Users\\cen62777\\Documents\\" + "log_"
+                            + c.getCategoryName()+".csv"), '\t', '\0', '\0'
+                            , "\n");
+        }
+        Distributor.calculateDistribution(writer, c, outputText
+                , checkBoxLogSimulation.isSelected());
+        if(checkBoxLogSimulation.isSelected()){
+            writer.close();
+        }
         outputTextArea.setText("Basel II category: " + c.getCategoryName() + "\n");
         for(String s:outputText){
             outputTextArea.setText(outputTextArea.getText() + s + "\n");

@@ -7,13 +7,13 @@ package ama.servitors;
 
 import static ama.Constants.EXP_PERCENTILE;
 import static ama.Constants.GLOBAL_UPPER_LIMIT;
-import static ama.Constants.NUMBER_OF_YEARS;
 import ama.beans.Category;
 import ama.beans.Scenario;
 import com.opencsv.CSVWriter;
 import static java.lang.Math.log;
 import java.util.List;
 import org.apache.commons.math3.distribution.LogNormalDistribution;
+import static ama.gui.AMAController.numberOfYears;
 
 /**
  *
@@ -54,7 +54,7 @@ public class Distributor {
         }
     }
     public static void calculateDistribution(CSVWriter writer, Category category
-            , List<String> outputText){
+            , List<String> outputText, boolean toLog){
         category.setDistribution(new int[GLOBAL_UPPER_LIMIT+1]);
         category.setBuckets(new double[5]);
         category.setBucketRatios(new double[5]);
@@ -66,28 +66,30 @@ public class Distributor {
                     new LogNormalDistribution(
                             scenario.getMu(),scenario.getSigma());
             for(int i = 0; i < (
-                    scenario.getProbability() * NUMBER_OF_YEARS); i++ ){
+                    scenario.getProbability() * numberOfYears); i++ ){
                 Double d = lnd.sample();
                 if(true){
                     Distributor.distribute(category.getDistribution()
                                                 , category.getThreshold(), d);
                     //logging simulation output into a csv file
-                    String entry =scenario.getRiskardID()
-                                + ","
-                                + scenario.getScenarioNumber()
-                                + ","
-                                + scenario.getRiskType()
-                                + ","
-                                + scenario.getEstimated()
-                                + ","
-                                + scenario.getProbability()
-                                + ","
-                                + scenario.getMax()
-                                + ","
-                                + d
-                                ;                                   
-                    String[] entries = entry.split(",");
-                    writer.writeNext(entries);
+                    if(toLog){
+                        String entry =scenario.getRiskardID()
+                            + ","
+                            + scenario.getScenarioNumber()
+                            + ","
+                            + scenario.getRiskType()
+                            + ","
+                            + scenario.getEstimated()
+                            + ","
+                            + scenario.getProbability()
+                            + ","
+                            + scenario.getMax()
+                            + ","
+                            + d
+                            ;                                   
+                        String[] entries = entry.split(",");
+                        writer.writeNext(entries);
+                    }
                 }
             }
         }
