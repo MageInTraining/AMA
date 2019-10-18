@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ama;
+package ama.beans;
 
-import static ama.Constants.EXP_PERCENTILE;
 import com.opencsv.bean.CsvBindByPosition;
 
 /**
@@ -14,14 +13,16 @@ import com.opencsv.bean.CsvBindByPosition;
  */
 public class Scenario implements java.io.Serializable{
     @CsvBindByPosition(position = 0)
-    private int scenarioNumber;
+    private String riskCardID;
     @CsvBindByPosition(position = 1)
-    private int riskTypeBL2;
+    private int scenarioNumber;
     @CsvBindByPosition(position = 2)
-    private double estimated;
+    private int riskTypeBL2;
     @CsvBindByPosition(position = 3)
-    private double probability;
+    private double estimated;
     @CsvBindByPosition(position = 4)
+    private double probability;
+    @CsvBindByPosition(position = 5)
     private double max;
     
     private double mu;
@@ -29,50 +30,61 @@ public class Scenario implements java.io.Serializable{
     
     public Scenario(){
     }
+    public Scenario(String id){
+        this.riskCardID = id;
+    }
+    public Scenario(int scenarioNumber){
+        this.scenarioNumber = scenarioNumber;
+    }
     
     /**Getters**/
+    public String getRiskardID(){
+        return this.riskCardID;
+    }
     public int getScenarioNumber(){
-        return scenarioNumber;
+        return this.scenarioNumber;
     }
     public double getEstimated(){
-        return estimated;
+        return this.estimated;
     }
     public double getProbability(){
-        return probability;
+        return this.probability;
     }
     public double getMax(){
-        return max;
+        return this.max;
     }
     public double getMu(){
-        return mu;
+        return this.mu;
     }
     public double getSigma(){
-        return sigma;
+        return this.sigma;
     }
     public int getRiskType(){
-        return riskTypeBL2;
+        return this.riskTypeBL2;
     }
     /**Setters*/
+    public void setRiskCardID(String id){
+        this.riskCardID = id;
+    }
     public void setScenarioNumber(int n){
-       scenarioNumber = n; 
+       this.scenarioNumber = n; 
     }
     public void setEstimated(double e){
-        estimated = e;
+        this.estimated = e;
     }
     public void setProbability(double p){
-        probability = p;
+        this.probability = p;
     }
     public void setMax(double m){
-        max = m;
+        this.max = m;
     }
     public void setMu(double m){
-        mu = m;
+        this.mu = m;
     }
-    public void setSigma(){
-        sigma =PercentileSeeker.getSigmaPerPercentile(EXP_PERCENTILE,
-                                                max, mu);
+    public void setSigma(double sigma){
+        this.sigma = sigma;
     }
     public void setRiskType(int r){
-        riskTypeBL2 = r;
+        this.riskTypeBL2 = r;
     }
 }
