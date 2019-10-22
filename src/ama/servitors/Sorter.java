@@ -7,6 +7,7 @@ package ama.servitors;
 
 import ama.beans.BlacklistItem;
 import ama.beans.Category;
+import ama.beans.EmusHistory;
 import ama.beans.Scenario;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileNotFoundException;
@@ -36,6 +37,15 @@ public class Sorter {
                         .withType(BlacklistItem.class).withSeparator(',')
                             .build().parse();
         return blacklist;
+    }
+    
+    public static List<EmusHistory> extractEmus (String fileName)
+        throws FileNotFoundException{
+        List<EmusHistory> emus =
+                    new CsvToBeanBuilder(new FileReader(fileName))
+                        .withType(BlacklistItem.class).withSeparator(',')
+                            .build().parse();
+        return emus;
     }
     
     public static void sortScenarios(

@@ -14,6 +14,7 @@ import static java.lang.Math.log;
 import java.util.List;
 import org.apache.commons.math3.distribution.LogNormalDistribution;
 import static ama.gui.AMAController.numberOfYears;
+import javafx.scene.control.ProgressBar;
 
 /**
  *
@@ -24,7 +25,7 @@ public class Distributor {
     public static void distribute(int[] distribution
             , double threshold, double x){
         int b = (int)x;
-        if(x>threshold){
+        if(true){
             if(b > GLOBAL_UPPER_LIMIT){
                 b = GLOBAL_UPPER_LIMIT;
             }
@@ -54,10 +55,14 @@ public class Distributor {
         }
     }
     public static void calculateDistribution(CSVWriter writer, Category category
-            , List<String> outputText, boolean toLog){
+            , List<String> outputText, boolean toLog, ProgressBar progressBar){
         category.setDistribution(new int[GLOBAL_UPPER_LIMIT+1]);
         category.setBuckets(new double[5]);
         category.setBucketRatios(new double[5]);
+        
+//        progressBar.setProgress(0);
+//        Double progressStep = (double)(100 / category.getScenarios().size());
+        
         for (Scenario scenario : category.getScenarios()){
             scenario.setMu(log(scenario.getEstimated()));
             scenario.setSigma(PercentileSeeker.getSigmaPerPercentile(
@@ -68,7 +73,7 @@ public class Distributor {
             for(int i = 0; i < (
                     scenario.getProbability() * numberOfYears); i++ ){
                 Double d = lnd.sample();
-                if(true){
+                if(d>category.getThreshold()){
                     Distributor.distribute(category.getDistribution()
                                                 , category.getThreshold(), d);
                     //logging simulation output into a csv file
@@ -92,6 +97,7 @@ public class Distributor {
                     }
                 }
             }
+//            progressBar.setProgress(progressBar.getProgress() + progressStep);
         }
         Distributor.putInBucket(category.getDistribution()
                 , category.getBuckets()

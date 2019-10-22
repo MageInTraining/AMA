@@ -27,6 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -69,21 +70,26 @@ public class AMAController implements Initializable {
     @FXML //fx:id="chosenScenarioTextField"
     private TextField chosenScenarioTextField;
     @FXML //fx:id="chosenEMUSTextField"
-    private TextField chosenEMUSTextField;
+    private TextField chosenEmusTextField;
     @FXML //fx:id="chosenBlacklistTextField"
     private TextField chosenBlacklistTextField;
     @FXML //fx:id="numberOfYearsTextField"
     private TextField numberOfYearsTextField;
     @FXML //fx:id="checkBoxLogSimulation"
-    private CheckBox checkBoxLogSimulation; 
+    private CheckBox checkBoxLogSimulation;
+    @FXML //fx:id="progressBar"
+    public ProgressBar progressBar;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Implicit scenario csv path, for demonstration purpouses only
+        progressBar.setProgress(0);
         chosenScenarioTextField
                 .setText("C:\\Users\\cen62777\\Documents\\Scenarios_CSAS.csv");
         chosenBlacklistTextField
                 .setText("C:\\Users\\cen62777\\Documents\\Blacklist_CSAS.csv");
+        chosenEmusTextField
+                .setText("Hardcoded for now!");
         categoryChoiceField.setItems(categoryNamesList);
         categoryChoiceField.setValue("internalFraud");
         numberOfYears = 1000;
@@ -108,8 +114,8 @@ public class AMAController implements Initializable {
             chosenScenarioTextField.setText(chooseCSVFile());
     }
     @FXML
-    void handleBtnEMUSFileChooser(ActionEvent event) {
-            chosenEMUSTextField.setText(chooseCSVFile());
+    void handleBtnEmusFileChooser(ActionEvent event) {
+            chosenEmusTextField.setText(chooseCSVFile());
     }
     @FXML
     void handleBtnBlacklistFileChooser(ActionEvent event) {
@@ -121,7 +127,7 @@ public class AMAController implements Initializable {
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().add(new ExtensionFilter("CSV Files", "*.csv"));
         File f = fc.showOpenDialog(null);
-        if (f !=null){
+        if (f != null){
             r = f.getAbsolutePath();
         }
         return r;
@@ -129,23 +135,27 @@ public class AMAController implements Initializable {
     
     @FXML
     private void handleBtnGCalculateAction(ActionEvent event) throws IOException{
-        String scenariosFilePath = chosenScenarioTextField.getText();
-        String blacklistFilePath = chosenBlacklistTextField.getText();
+        
+        String scenariosFilePath    = chosenScenarioTextField.getText();
+        String blacklistFilePath    = chosenBlacklistTextField.getText();
+////        String emusFilePath         = chosenEmusTextField.getText();
+        
         numberOfYears = Integer.valueOf(numberOfYearsTextField.getText());
+//        progressBar.setProgress(0);
+//////        List<EmusHistory> emusDamageList = Sorter.extractEmus(emusFilePath);
         List<String> outputText = new ArrayList();
         
-
         //individual list of scenarios for each of (Erste?) groups
         //events per year calculated as follows:
         //  = number_of_events/(year of last events - year_of firs_events)
         Category internalFraud
                             = new Category("internalFraud"      , 0.6,  1.0643);
         Category employmentPractices
-                            = new Category("employmentPractices", 0.16, 0);
-        Category execution          
+                            = new Category("employmentPractices", 1, 0);
+        Category execution
                             = new Category("execution"          , 0.5,  1.2002);
         Category clientPractices    
-                            = new Category("clientPractices"    , 0.16, 1.0231);
+                            = new Category("clientPractices"    , 1, 1.0231);
         Category businessDisruption
                             = new Category("businessDisruption" , 0.1,  0.029);
         Category externalFraud 
@@ -194,7 +204,7 @@ public class AMAController implements Initializable {
                             , "\n");
         }
         Distributor.calculateDistribution(writer, c, outputText
-                , checkBoxLogSimulation.isSelected());
+                , checkBoxLogSimulation.isSelected(), progressBar);
         if(checkBoxLogSimulation.isSelected()){
             writer.close();
         }
