@@ -149,19 +149,19 @@ public class AMAController implements Initializable {
         //events per year calculated as follows:
         //  = number_of_events/(year of last events - year_of firs_events)
         Category internalFraud
-                            = new Category("internalFraud"      , 0.6,  1.0643);
+                            = new Category("internalFraud"      , 0.6,  0.5);
         Category employmentPractices
                             = new Category("employmentPractices", 1, 0);
         Category execution
-                            = new Category("execution"          , 0.5,  1.2002);
+                            = new Category("execution"          , 0.5,  0.75);
         Category clientPractices    
-                            = new Category("clientPractices"    , 1, 1.0231);
+                            = new Category("clientPractices"    , 1, 0.3);
         Category businessDisruption
-                            = new Category("businessDisruption" , 0.1,  0.029);
+                            = new Category("businessDisruption" , 0.1,  0.1818);
         Category externalFraud 
-                            = new Category("externalFraud"      , 0.6,  2.4388);
+                            = new Category("externalFraud"      , 0.6,  1.375);
         Category damageToAssest
-                            = new Category("damageToAssest"     , 0.1,  0.6955);
+                            = new Category("damageToAssest"     , 0.1,  0.5555);
         Category notSet
                             = new Category();
         
@@ -208,7 +208,8 @@ public class AMAController implements Initializable {
         if(checkBoxLogSimulation.isSelected()){
             writer.close();
         }
-        outputTextArea.setText("Basel II category: " + c.getCategoryName() + "\n");
+        outputTextArea.setText("Basel II category: " + c.getCategoryName()
+                + "\n");
         for(String s:outputText){
             outputTextArea.setText(outputTextArea.getText() + s + "\n");
         }
