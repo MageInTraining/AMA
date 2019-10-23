@@ -70,13 +70,13 @@
     nbproject/build-impl.xml file. 
 
     -->
-    <target name="AMA" depends="jar">
+    <target name="package-for-store" depends="jar">
 
     <!-- Change the value of this property to be the name of your JAR,
     minus the .jar extension. It should not have spaces.
     <property name="store.jar.name" value="MyJarName"/>
     -->
-        <property name="AMA" value="MarsRoverViewer"/>
+        <property name="store.jar.name" value="AMA"/>
 
         <!-- don't edit below this line -->
 
