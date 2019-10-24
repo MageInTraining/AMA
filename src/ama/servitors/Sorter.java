@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.TextArea;
 
 /**
  *
@@ -32,18 +33,23 @@ public class Sorter {
     
     public static List<BlacklistItem> extractBlacklist(String fileName)
             throws FileNotFoundException{
-        List<BlacklistItem> blacklist =
-                    new CsvToBeanBuilder(new FileReader(fileName))
-                        .withType(BlacklistItem.class).withSeparator(',')
-                            .build().parse();
+        List<BlacklistItem> blacklist = new ArrayList<>();
+        try{
+            blacklist = 
+                new CsvToBeanBuilder(new FileReader(fileName))
+                            .withType(BlacklistItem.class).withSeparator(',')
+                                .build().parse();
+        } catch (FileNotFoundException ex) {
+            //To be handled by higher level method
+        }
         return blacklist;
     }
     
-    public static List<EmusHistory> extractEmus (String fileName)
+    public static List<EmusHistory> extractEmus(String fileName)
         throws FileNotFoundException{
         List<EmusHistory> emus =
                     new CsvToBeanBuilder(new FileReader(fileName))
-                        .withType(BlacklistItem.class).withSeparator(',')
+                        .withType(EmusHistory.class).withSeparator(',')
                             .build().parse();
         return emus;
     }
@@ -59,21 +65,22 @@ public class Sorter {
             , Category  externalFraud
             , Category  damageToAssest
             , Category  notSet
+            , TextArea  textArea
             ){
         for (Scenario scenario : scenarios){
             int s = scenario.getRiskType();
             double d = scenario.getMax();
-            for (BlacklistItem b : blacklist){
-                if(scenario.getRiskardID().equals(b.getRiskCardID())){
-                    if(b.getScenarioNumber() == 0){
-                        s = 0;
-                    }else{
-                       if(scenario.getScenarioNumber()==b.getScenarioNumber()){
-                       s = 0;
+                for (BlacklistItem b : blacklist){
+                    if(scenario.getRiskardID().equals(b.getRiskCardID())){
+                        if(b.getScenarioNumber() == 0){
+                            s = 0;
+                        }else{
+                           if(scenario.getScenarioNumber()==b.getScenarioNumber()){
+                           s = 0;
+                            }
                         }
                     }
-                }
-            }
+                }  
         switch(s) {
             case 1:
                 internalFraud .addToList(scenario);

@@ -6,6 +6,7 @@
 package ama.gui;
 
 import ama.beans.Category;
+import ama.beans.EmusHistory;
 import ama.servitors.Distributor;
 import ama.servitors.Sorter;
 import com.opencsv.CSVWriter;
@@ -62,7 +63,7 @@ public class AMAController implements Initializable {
     public static int numberOfYears;
 
     @FXML //  fx:id="outputTextArea"
-    private TextArea outputTextArea;
+    public TextArea outputTextArea;
     @FXML // fx:id="btnCalculate"
     private Button btnCalculate;
     @FXML //fx:id="categoryChoiceField"
@@ -89,7 +90,8 @@ public class AMAController implements Initializable {
         chosenBlacklistTextField
                 .setText("C:\\Users\\cen62777\\Documents\\Blacklist_CSAS.csv");
         chosenEmusTextField
-                .setText("Hardcoded for now!");
+                .setText("C:\\Users\\cen62777\\Documents\\EMUS_CSAS.csv");
+        
         categoryChoiceField.setItems(categoryNamesList);
         categoryChoiceField.setValue("internalFraud");
         numberOfYears = 1000;
@@ -136,32 +138,41 @@ public class AMAController implements Initializable {
     @FXML
     private void handleBtnGCalculateAction(ActionEvent event) throws IOException{
         
+        outputTextArea.clear();
+        
         String scenariosFilePath    = chosenScenarioTextField.getText();
         String blacklistFilePath    = chosenBlacklistTextField.getText();
-////        String emusFilePath         = chosenEmusTextField.getText();
+        String emusFilePath         = chosenEmusTextField.getText();
         
         numberOfYears = Integer.valueOf(numberOfYearsTextField.getText());
 //        progressBar.setProgress(0);
-//////        List<EmusHistory> emusDamageList = Sorter.extractEmus(emusFilePath);
+        List<EmusHistory> emusDamageList = Sorter.extractEmus(emusFilePath);
         List<String> outputText = new ArrayList();
         
         //individual list of scenarios for each of (Erste?) groups
         //events per year calculated as follows:
         //  = number_of_events/(year of last events - year_of firs_events)
         Category internalFraud
-                            = new Category("internalFraud"      , 0.6,  0.5);
+                            = new Category("internalFraud"      , 0.6
+                                    , emusDamageList.get(0).getDamage());
         Category employmentPractices
-                            = new Category("employmentPractices", 1, 0);
+                            = new Category("employmentPractices", 1
+                                    , emusDamageList.get(1).getDamage());
         Category execution
-                            = new Category("execution"          , 0.5,  0.75);
+                            = new Category("execution"          , 0.5
+                                    , emusDamageList.get(2).getDamage());
         Category clientPractices    
-                            = new Category("clientPractices"    , 1, 0.3);
+                            = new Category("clientPractices"    , 1
+                                    , emusDamageList.get(3).getDamage());
         Category businessDisruption
-                            = new Category("businessDisruption" , 0.1,  0.1818);
+                            = new Category("businessDisruption" , 0.1
+                                    , emusDamageList.get(4).getDamage());
         Category externalFraud 
-                            = new Category("externalFraud"      , 0.6,  1.375);
+                            = new Category("externalFraud"      , 0.6
+                                    , emusDamageList.get(5).getDamage());
         Category damageToAssest
-                            = new Category("damageToAssest"     , 0.1,  0.5555);
+                            = new Category("damageToAssest"     , 0.1
+                                    , emusDamageList.get(6).getDamage());
         Category notSet
                             = new Category();
         
@@ -191,7 +202,8 @@ public class AMAController implements Initializable {
                 , businessDisruption
                 , externalFraud
                 , damageToAssest
-                , notSet);
+                , notSet
+                , outputTextArea);
 
         Category c = CategoryMap.get(categoryChoiceField.getValue());
         CSVWriter writer = null;
@@ -208,8 +220,9 @@ public class AMAController implements Initializable {
         if(checkBoxLogSimulation.isSelected()){
             writer.close();
         }
-        outputTextArea.setText("Basel II category: " + c.getCategoryName()
-                + "\n");
+        outputTextArea.setText( outputTextArea.getText() + "Basel II category: "
+                + c.getCategoryName()
+                    + "\n");
         for(String s:outputText){
             outputTextArea.setText(outputTextArea.getText() + s + "\n");
         }

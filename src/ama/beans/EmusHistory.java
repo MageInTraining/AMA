@@ -11,25 +11,28 @@ import com.opencsv.bean.CsvBindByPosition;
  *
  * @author cen62777
  */
-public class EmusHistory {
+public class EmusHistory implements java.io.Serializable{
     @CsvBindByPosition(position = 0)
     private String category;
     @CsvBindByPosition(position = 1)
-    private Double damage;
+    private double damage;
     
-    public void setCategory(String category){
-        this.category = category;
+    public EmusHistory(){    
     }
-    
-    public void setDamage(Double damage){
+    public EmusHistory(String category, double damage){    
+        this.category = category;
         this.damage = damage;
     }
-    
     public String getCategory(){
         return this.category;
     }
-    
-    public Double getDamage(){
+    public double getDamage(){
         return this.damage;
+    }
+    public void setCategory(String category){
+        this.category = category;
+    }
+    public void setDamage(double damage){
+        this.damage = damage;
     }
 }
