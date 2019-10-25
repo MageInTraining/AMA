@@ -136,7 +136,8 @@ public class AMAController implements Initializable {
     }
     
     @FXML
-    private void handleBtnGCalculateAction(ActionEvent event) throws IOException{
+    private void handleBtnGCalculateAction(ActionEvent event)
+            throws IOException{
         
         outputTextArea.clear();
         

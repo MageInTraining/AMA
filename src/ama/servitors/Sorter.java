@@ -75,7 +75,8 @@ public class Sorter {
                         if(b.getScenarioNumber() == 0){
                             s = 0;
                         }else{
-                           if(scenario.getScenarioNumber()==b.getScenarioNumber()){
+                           if(scenario.getScenarioNumber()
+                                   ==b.getScenarioNumber()){
                            s = 0;
                             }
                         }
