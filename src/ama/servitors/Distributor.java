@@ -35,8 +35,9 @@ public class Distributor {
     
     public static void putInBucket(int[] distribution
             , double [] buckets, int size){
+        //size parameter has been deprecated
         int b=0;
-        for(int i = 0; i < size; i++){ 
+        for(int i = 0; i <= GLOBAL_UPPER_LIMIT; i++){ 
             switch(i){
                 case(5):
                     b=1;
