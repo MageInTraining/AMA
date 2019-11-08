@@ -65,6 +65,7 @@ public class Distributor {
 //        Double progressStep = (double)(100 / category.getScenarios().size());
         
         for (Scenario scenario : category.getScenarios()){
+            long tailNumber = 0;
             scenario.setMu(log(scenario.getEstimated()));
             scenario.setSigma(PercentileSeeker.getSigmaPerPercentile(
                     EXP_PERCENTILE, scenario.getMax(), scenario.getMu()));
@@ -74,31 +75,53 @@ public class Distributor {
             for(int i = 0; i < (
                     scenario.getProbability() * numberOfYears); i++ ){
                 Double d = lnd.sample();
+                if(toLog){
+                    String entry =scenario.getRiskardID()
+                        + ","
+                        + scenario.getScenarioNumber()
+                        + ","
+                        + scenario.getRiskType()
+                        + ","
+                        + scenario.getEstimated()
+                        + ","
+                        + scenario.getProbability()
+                        + ","
+                        + scenario.getMax()
+                        + ","
+                        + d
+                        ;                                   
+                    String[] entries = entry.split(",");
+                    writer.writeNext(entries);
+                }
                 if(d>category.getThreshold()){
                     Distributor.distribute(category.getDistribution()
                                                 , category.getThreshold(), d);
                     //logging simulation output into a csv file
-                    if(toLog){
-                        String entry =scenario.getRiskardID()
-                            + ","
-                            + scenario.getScenarioNumber()
-                            + ","
-                            + scenario.getRiskType()
-                            + ","
-                            + scenario.getEstimated()
-                            + ","
-                            + scenario.getProbability()
-                            + ","
-                            + scenario.getMax()
-                            + ","
-                            + d
-                            ;                                   
-                        String[] entries = entry.split(",");
-                        writer.writeNext(entries);
-                    }
+//                    if(toLog){
+//                        String entry =scenario.getRiskardID()
+//                            + ","
+//                            + scenario.getScenarioNumber()
+//                            + ","
+//                            + scenario.getRiskType()
+//                            + ","
+//                            + scenario.getEstimated()
+//                            + ","
+//                            + scenario.getProbability()
+//                            + ","
+//                            + scenario.getMax()
+//                            + ","
+//                            + d
+//                            ;                                   
+//                        String[] entries = entry.split(",");
+//                        writer.writeNext(entries);
+//                    }
+                tailNumber++;
                 }
             }
 //            progressBar.setProgress(progressBar.getProgress() + progressStep);
+        outputText.add("Scenario "
+                + scenario.getScenarioNumber() + ":\t" + lnd.getScale()
+                + "\t" + lnd.getShape() + "\t" + tailNumber);
         }
         Distributor.putInBucket(category.getDistribution()
                 , category.getBuckets()
