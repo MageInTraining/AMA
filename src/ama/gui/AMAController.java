@@ -150,7 +150,6 @@ public class AMAController implements Initializable {
         List<EmusHistory> emusDamageList = Sorter.extractEmus(emusFilePath);
         List<String> outputText = new ArrayList();
         
-        //individual list of scenarios for each of (Erste?) groups
         //events per year calculated as follows:
         //  = number_of_events/(year of last events - year_of firs_events)
         Category internalFraud

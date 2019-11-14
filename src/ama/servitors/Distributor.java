@@ -93,7 +93,8 @@ public class Distributor {
                     String[] entries = entry.split(",");
                     writer.writeNext(entries);
                 }
-                if(d>category.getThreshold()){
+//                if(d>category.getThreshold()){
+                if(true){
                     Distributor.distribute(category.getDistribution()
                                                 , category.getThreshold(), d);
                     //logging simulation output into a csv file
